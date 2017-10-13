@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "847951009387",
+    "firebase_url": "https://careerpass-3356a.firebaseio.com",
+    "project_id": "careerpass-3356a",
+    "storage_bucket": "careerpass-3356a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847951009387:android:b8404a5572920853",
+        "android_client_info": {
+          "package_name": "com.rainbowsix.careerpass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847951009387-clid5avaaa6upcitos673i2593booa17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTmBRXLxT49KSlqCv6RxEbVC4bB77WkIg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
