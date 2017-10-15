@@ -13,15 +13,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.
         OnNavigationItemSelectedListener {
-
+    //private DatabaseReference database;
     DrawerLayout drawer;
     Toolbar toolbar;
     NavigationView navigationView;
     FrameLayout frameLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
 
@@ -80,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
         }
         int id = item.getItemId();
         if (id == R.id.nav_home) {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
         else if (id == R.id.nav_search) {
         }
