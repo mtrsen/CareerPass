@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.settings) {
-            return true;
+            startActivity(new Intent(this, Login.class));
         }
 
         return super.onOptionsItemSelected(item);

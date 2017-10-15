@@ -118,7 +118,11 @@
                     android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:scrollbars="vertical"/>
+                    android:scrollbarSize="3dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    android:scrollingCache="true"
+                    android:smoothScrollbar="true" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
