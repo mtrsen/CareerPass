@@ -149,22 +149,27 @@ public class DayFragment extends Fragment {
                 Toast.makeText(getActivity(), "This is my Toast message!", Toast.LENGTH_LONG).show();
                 for(int i = 0; i < data_interview.size(); i++){
                     if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
-                        String tag = data_interview.get(i).getTag();
+                        toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
+                        mFirebaseDatabase.getReference().child("aaa").child(data_interview.get(i).getTag()).setValue(todo);
                     }
                 }
-                for(int i = 0; i < data_interview.size(); i++){
+                for(int i = 0; i < data_resume.size(); i++){
                     if(Boolean.valueOf(data_resume.get(i).getAdded()) == true){
+                        toDoListBlock todo = new toDoListBlock("resume",date,data_resume.get(i).getTag(),"false");
+                        mFirebaseDatabase.getReference().child("aaa").child(data_resume.get(i).getTag()).setValue(todo);
 
                     }
                 }
-                for(int i = 0; i < data_interview.size(); i++){
+                for(int i = 0; i < data_xxx.size(); i++){
                     if(Boolean.valueOf(data_xxx.get(i).getAdded()) == true){
-
+                        toDoListBlock todo = new toDoListBlock("xxx",date,data_xxx.get(i).getTag(),"false");
+                        mFirebaseDatabase.getReference().child("aaa").child(data_xxx.get(i).getTag()).setValue(todo);
                     }
                 }
-                for(int i = 0; i < data_interview.size(); i++){
+                for(int i = 0; i < data_others.size(); i++){
                     if(Boolean.valueOf(data_others.get(i).getAdded()) == true){
-
+                        toDoListBlock todo = new toDoListBlock("others",date,data_others.get(i).getTag(),"false");
+                        mFirebaseDatabase.getReference().child("aaa").child(data_others.get(i).getTag()).setValue(todo);
                     }
                 }
 
