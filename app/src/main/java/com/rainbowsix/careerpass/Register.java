@@ -46,6 +46,6 @@ public class Register extends MainActivity implements View.OnClickListener {
     }
     private void writeNewUser(String username, String email, String password, String enrollment) {
         User newUser = new User(username, email, password, enrollment);
-        databaseReference.child("User").setValue(newUser);
+        databaseReference.child("User").child(username).setValue(newUser);
     }
 }

@@ -146,7 +146,7 @@ public class DayFragment extends Fragment {
         addtolist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "This is my Toast message!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
                 for(int i = 0; i < data_interview.size(); i++){
                     if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
@@ -172,7 +172,6 @@ public class DayFragment extends Fragment {
                         mFirebaseDatabase.getReference().child("aaa").child(data_others.get(i).getTag()).setValue(todo);
                     }
                 }
-
 
             }
         });
