@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
     Toolbar toolbar;
     NavigationView navigationView;
     FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.settings) {
             return true;
         }
 
@@ -77,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
-//        FragmentManager fragmentManager = getFragmentManager();
         int id = item.getItemId();
         if (id == R.id.nav_home) {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
         else if (id == R.id.nav_search) {
         }
