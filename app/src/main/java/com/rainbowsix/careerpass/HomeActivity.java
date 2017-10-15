@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.*;
+
 
 public class HomeActivity extends MainActivity{
 
@@ -16,6 +18,7 @@ public class HomeActivity extends MainActivity{
         viewPager.setAdapter(va);
         TabLayout tbl = (TabLayout)findViewById(R.id.tablayout);
         tbl.setupWithViewPager(viewPager);
+
     }
 
     @Override
