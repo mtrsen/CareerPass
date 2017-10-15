@@ -60,7 +60,7 @@ public class DayFragment extends Fragment {
         addtolist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "This is my Toast message!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
             }
         });
     }
