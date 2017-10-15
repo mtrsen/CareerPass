@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="com.hansenzhao.careerpass.ToDoListActivity">
+    tools:context="com.rainbowsix.careerpass.ToDoListActivity">
 
     <ListView
         android:id="@+id/list_todo"
@@ -14,11 +14,13 @@
         android:layout_weight="6">
     </ListView>
 
-    <Button
-        android:id="@+id/show_complete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show complete"
-        android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/show_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show complete"
+            android:layout_gravity="center_horizontal"/>
+
 
 </LinearLayout>
