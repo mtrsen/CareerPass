@@ -13,21 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.
         OnNavigationItemSelectedListener {
-    //private DatabaseReference database;
+
     DrawerLayout drawer;
     Toolbar toolbar;
     NavigationView navigationView;
     FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,40 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
-//        database = FirebaseDatabase.getInstance().getReference();
-//        Toast.makeText(getBaseContext(),"hi",
-//                Toast.LENGTH_SHORT).show();
-
-//        database.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                DataSnapshot userSnapshot = dataSnapshot.child("User").child("Guoyuan").child("favorite");
-//
-//                for (DataSnapshot block : userSnapshot.getChildren()) {
-//                    toDoListBlock cur = block.getValue(toDoListBlock.class);
-//                    data.add(new ListSingle(cur.category, cur.time, cur.name, cur.compelete));
-//                }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//        Toast toast = Toast.makeText(getApplicationContext(),
-//                "The comment is failed, please check you network status.", Toast.LENGTH_SHORT);
-//        toast.show();
-//
-
-
-
-
-
-
-
-
     }
 
 
@@ -118,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
-//        FragmentManager fragmentManager = getFragmentManager();
         int id = item.getItemId();
         if (id == R.id.nav_home) {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
         else if (id == R.id.nav_search) {
         }
