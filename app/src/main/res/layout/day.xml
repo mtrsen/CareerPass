@@ -134,7 +134,7 @@
                         android:id="@+id/xxx_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Xxx"/>
+                        android:text="Job Search"/>
 
                     <TextView
                         android:id="@+id/xxx_percent"
@@ -191,5 +191,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/addtolist"
         android:text="Add to my To-do List"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/addpost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
         android:layout_gravity="center_horizontal"/>
 </LinearLayout>
