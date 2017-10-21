@@ -7,7 +7,7 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends MainActivity {
+public class SearchActivity extends MenuActivity {
     List<ListSingle> data;
     SearchView searchView;
     ListView listView;

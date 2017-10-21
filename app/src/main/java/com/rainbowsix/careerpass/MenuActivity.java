@@ -89,6 +89,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.
             startActivity(new Intent(this, HomeActivity.class));
         }
         else if (id == R.id.nav_search) {
+            startActivity(new Intent(this, SearchActivity.class));
         }
         else {
             startActivity(new Intent(getApplicationContext(), ToDoListActivity.class));
