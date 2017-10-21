@@ -1,9 +1,8 @@
 package com.rainbowsix.careerpass;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.firebase.database.*;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by lihan on 10/13/2017.
@@ -36,7 +34,7 @@ public class DayFragment extends Fragment {
     List<TagSingle> data_xxx;
     List<TagSingle> data_others;
 
-    Button addtolist;
+    Button addtolist, addpost;
     ScrollView scrollView;
 
     FirebaseDatabase mFirebaseDatabase;
@@ -75,7 +73,7 @@ public class DayFragment extends Fragment {
         list_xxx = (ListView)rootView1.findViewById(R.id.xxxlist);
         list_others = (ListView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
-
+        addpost = (Button)rootView1.findViewById(R.id.addpost);
 
 //        TextView myTextView= (TextView) rootView1.findViewById(R.id.interview_percent);
 //        myTextView.setText(ratio_interview);
@@ -173,6 +171,14 @@ public class DayFragment extends Fragment {
                     }
                 }
 
+            }
+        });
+
+        addpost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PostActivity.class);
+                startActivity(intent);
             }
         });
     }
