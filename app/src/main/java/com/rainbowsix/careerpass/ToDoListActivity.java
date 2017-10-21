@@ -1,12 +1,10 @@
 package com.rainbowsix.careerpass;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ToDoListActivity extends MainActivity {
+public class ToDoListActivity extends MenuActivity{
     ListView list;
     ListAdapter listAdapter;
     List<ListSingle> data;
