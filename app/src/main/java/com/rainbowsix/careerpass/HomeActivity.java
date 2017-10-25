@@ -3,6 +3,7 @@ package com.rainbowsix.careerpass;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 
 public class HomeActivity extends MenuActivity{
@@ -17,6 +18,13 @@ public class HomeActivity extends MenuActivity{
         TabLayout tbl = (TabLayout)findViewById(R.id.tablayout);
         tbl.setupWithViewPager(viewPager);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String name1 = bundle.getString("email");
+            String name2 = bundle.getString("name");
+            Log.v("email", name1);
+            Log.v("name", name2);
+        }
     }
 
     @Override

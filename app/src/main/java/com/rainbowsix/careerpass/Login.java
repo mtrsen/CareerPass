@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static android.R.attr.value;
+
 /**
  * Created by hansenzhao on 10/14/17.
  */
@@ -48,7 +50,7 @@ public class Login extends MenuActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.Login:
-                String userName = email.getText().toString();
+                final String userName = email.getText().toString();
                 String passWord = password.getText().toString();
                 if (TextUtils.isEmpty(userName)) {
                     Toast.makeText(getApplicationContext(), "Enter your username!", Toast.LENGTH_LONG).show();
@@ -69,7 +71,10 @@ public class Login extends MenuActivity implements View.OnClickListener {
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra("email", userName);
+                            intent.putExtra("name", userName);
+                            startActivity(intent);
                         }
                     }
                 });
