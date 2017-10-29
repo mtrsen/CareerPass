@@ -1,5 +1,7 @@
 package com.rainbowsix.careerpass;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import static android.R.attr.button;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -61,10 +65,23 @@ public class PostActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(date.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Date cannot be empty!", Toast.LENGTH_LONG).show();
                 }
-                finish();
+                open(post);
             }
         });
     }
 
+    public void open(View view){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("This post is successfully created!");
+                alertDialogBuilder.setPositiveButton("Got it!",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                finish();
+                            }
+                        });
 
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 }

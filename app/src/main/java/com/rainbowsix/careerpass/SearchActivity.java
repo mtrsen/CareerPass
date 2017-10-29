@@ -25,10 +25,9 @@ public class SearchActivity extends MenuActivity {
         searchView = (SearchView)findViewById(R.id.searchView);
         listView = (ListView)findViewById(R.id.listview);
         searchAdapter = new SearchAdapter(SearchActivity.this, data);
-        data.add(new ListSingle("prepare1", "20170303", "Interview", false));
-        data.add(new ListSingle("prepare2", "20180303", "Resume", false));
-        data.add(new ListSingle("prepare3", "20190303", "Interview", false));
-        data.add(new ListSingle("prepare4", "20190403", "Others", false));
+        data.add(new ListSingle("Prepare for interviews", "20170303", "Interview", false));
+        data.add(new ListSingle("Participate interview questions", "20180303", "Resume", false));
+        data.add(new ListSingle("Participate in oncampus interviews", "20190303", "Interview", false));
         listView.setAdapter(searchAdapter);
     }
 
