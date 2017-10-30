@@ -7,6 +7,7 @@ package com.rainbowsix.careerpass;
 public class User {
     String userName;
     String email;
+    String passWord;
     String grade;
 
     public void setUserName(String userName) {
@@ -17,24 +18,35 @@ public class User {
         this.email = email;
     }
 
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
     public void setGrade(String grade) {
         this.grade = grade;
     }
 
-    public String getEmail() {  return email; }
+    public String getEmail() {
+
+        return email;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
 
     public String getGrade() {
         return grade;
     }
 
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public User(String userName, String email, String grade) {
+    public User(String userName, String email, String passWord, String grade) {
         this.userName = userName;
         this.email = email;
+        this.passWord = passWord;
         this.grade = grade;
     }
     public User() {}
+    public String getUserName() {
+        return this.userName;
+    }
 }

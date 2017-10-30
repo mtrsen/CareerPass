@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +26,7 @@ public class Register extends MenuActivity implements View.OnClickListener {
     Button button;
     EditText username, password, email, enrollment;
     ProgressBar progressBar;
-    private DatabaseReference databaseReference;
+    DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +49,10 @@ public class Register extends MenuActivity implements View.OnClickListener {
 
 //                writeNewUser(username.getText().toString(), email.getText().toString(),
 //                        password.getText().toString(), enrollment.getText().toString());
-        final String userName = username.getText().toString().trim();
+        String userName = username.getText().toString().trim();
         String passWord = password.getText().toString().trim();
-        final String eMail = email.getText().toString().trim();
-        final String enrollMent = enrollment.getText().toString().trim();
+        String eMail = email.getText().toString().trim();
+        String enrollMent = enrollment.getText().toString().trim();
         if (TextUtils.isEmpty(userName)) {
             Toast.makeText(getApplicationContext(), "Enter User Name!", Toast.LENGTH_LONG).show();
             return;
@@ -81,10 +80,7 @@ public class Register extends MenuActivity implements View.OnClickListener {
                                     Toast.LENGTH_LONG).show();
                         }
                         else {
-
                             Toast.makeText(Register.this, "Register Successfully!", Toast.LENGTH_LONG).show();
-                            User newUser = new User(userName, eMail, enrollMent);
-                            databaseReference.child("User").child(userName).setValue(newUser);
                             startActivity(new Intent(getApplicationContext(), Login.class));
                             finish();
                         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:gravity="bottom"
@@ -14,6 +15,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:paddingTop="32dp"
         android:layout_width="307dp"
         android:layout_height="80dp"
         android:layout_weight="0.18"
@@ -21,17 +23,18 @@
         app:srcCompat="@drawable/profile_icon" />
 
     <TextView
-        android:id="@+id/nameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:text="Hansen Zhao"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/emailView"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark" />
+        android:text="hansen9393@gmail.com"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

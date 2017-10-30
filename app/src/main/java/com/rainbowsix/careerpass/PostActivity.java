@@ -11,18 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-=======
 import static android.R.attr.button;
->>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
 
 public class PostActivity extends AppCompatActivity {
 
@@ -31,15 +22,11 @@ public class PostActivity extends AppCompatActivity {
     Button cancel, post;
     String m_tag, m_cat, m_date, m_tip;
 
-    private DatabaseReference mDatabaseReference;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         initialize();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     public void initialize() {
@@ -49,7 +36,7 @@ public class PostActivity extends AppCompatActivity {
         spinner_category = (Spinner)findViewById(R.id.spinner_category);
         cancel = (Button)findViewById(R.id.cancel);
         post = (Button)findViewById(R.id.post);
-        String[] items = new String[]{"interview", "resume", "job search", "others"};
+        String[] items = new String[]{"Interview", "Resume", "Job search", "Others"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, items);
         spinner_category.setAdapter(adapter);
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -74,43 +61,11 @@ public class PostActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (TextUtils.isEmpty(tag.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Tag cannot be empty!", Toast.LENGTH_LONG).show();
-                    return ;
                 }
                 if (TextUtils.isEmpty(date.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Date cannot be empty!", Toast.LENGTH_LONG).show();
-                    return;
                 }
-<<<<<<< HEAD
-
-                final String cate =  m_cat;
-
-                PostCategory userPost = new PostCategory("false",1, tag.getText().toString());
-                mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(tag.getText().toString()).setValue(userPost);
-
-                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot snap = dataSnapshot.child("post").child(date.getText().toString()).child(cate);
-                        if (snap.hasChild("count")) {
-                            int num = snap.child("count").getValue(Integer.class);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(num+1);
-                        }
-                        else{
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(1);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("ratio").setValue(1);
-                        }
-                  }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                finish();
-=======
                 open(post);
->>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
             }
         });
     }
