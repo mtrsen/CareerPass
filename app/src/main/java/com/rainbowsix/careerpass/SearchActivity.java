@@ -39,6 +39,7 @@ public class SearchActivity extends MenuActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                data.clear();
                 data.add(new ListSingle("Prepare for interviews", "20170303", "Interview", false));
                 data.add(new ListSingle("Participate interview questions", "20180303", "Resume", false));
                 data.add(new ListSingle("Participate in oncampus interviews", "20190303", "Interview", false));
