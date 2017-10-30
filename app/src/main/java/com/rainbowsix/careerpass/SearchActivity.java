@@ -1,17 +1,25 @@
 package com.rainbowsix.careerpass;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+>>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+<<<<<<< HEAD
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+=======
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+>>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +30,19 @@ public class SearchActivity extends MenuActivity {
     ListView listView;
     SearchAdapter searchAdapter;
     Button search;
+<<<<<<< HEAD
     private DatabaseReference mDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+=======
+    private DatabaseReference mDatabase;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+>>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_search, frameLayout);
         initialize();
@@ -44,6 +60,7 @@ public class SearchActivity extends MenuActivity {
             @Override
             public void onClick(View view) {
                 data.clear();
+<<<<<<< HEAD
 
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -112,6 +129,14 @@ public class SearchActivity extends MenuActivity {
             }
         }
         return false;
+=======
+                data.add(new ListSingle("Prepare for interviews", "20170303", "Interview", false));
+                data.add(new ListSingle("Participate interview questions", "20180303", "Resume", false));
+                data.add(new ListSingle("Participate in oncampus interviews", "20190303", "Interview", false));
+                searchAdapter.notifyDataSetChanged();
+            }
+        });
+>>>>>>> 98fe2630f2444cbe1aed49de87471129e4682165
     }
 
 
