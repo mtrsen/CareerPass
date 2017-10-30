@@ -7,12 +7,27 @@
     android:orientation="vertical"
     tools:context="com.rainbowsix.careerpass.SearchActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="5"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         android:queryHint="Please input the tag" />
+
+        <Button
+            android:id="@+id/search"
+            android:layout_marginRight="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"/>
+
+    </LinearLayout>
     
     <ListView
         android:layout_margin="8dp"
