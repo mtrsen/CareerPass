@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.R.attr.value;
+
 /**
  * Created by hansenzhao on 10/14/17.
  */
@@ -63,9 +65,9 @@ public class Login extends MenuActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.Login:
-                final String Email = email.getText().toString();
-                final String passWord = password.getText().toString();
-                if (TextUtils.isEmpty(Email)) {
+                final String userName = email.getText().toString();
+                String passWord = password.getText().toString();
+                if (TextUtils.isEmpty(userName)) {
                     Toast.makeText(getApplicationContext(), "Enter your username!", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -84,13 +86,9 @@ public class Login extends MenuActivity implements View.OnClickListener {
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_LONG).show();
-
-                            SharedPreferences sharedPre = getSharedPreferences("userInfo",Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPre.edit();
-                            editor.putString("username",Email);
-                            editor.apply();
-
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra("email", userName);
+                            intent.putExtra("name", userName);
                             startActivity(intent);
                         }
                     }

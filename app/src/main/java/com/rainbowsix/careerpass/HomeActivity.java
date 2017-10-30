@@ -19,8 +19,13 @@ public class HomeActivity extends MenuActivity{
         viewPager.setAdapter(va);
         TabLayout tbl = (TabLayout)findViewById(R.id.tablayout);
         tbl.setupWithViewPager(viewPager);
-
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String name1 = bundle.getString("email");
+            String name2 = bundle.getString("name");
+            Log.v("email", name1);
+            Log.v("name", name2);
+        }
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -103,17 +102,14 @@ public class SearchActivity extends MenuActivity {
             }
         });
     }
-    public boolean contains(String query, String tag){
-        if(query.equals(""))    return true;
+    public boolean contains(String query, String tag) {
+        if (query.equals("")) return true;
         int size = query.length();
-        for(int i = 0; i <= tag.length() - size; i++){
-            if(tag.substring(i, i + size).toLowerCase().equals(query.toLowerCase())){
+        for (int i = 0; i <= tag.length() - size; i++) {
+            if (tag.substring(i, i + size).toLowerCase().equals(query.toLowerCase())) {
                 return true;
             }
         }
         return false;
     }
-
-
-
 }

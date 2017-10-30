@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class DayFragment extends Fragment {
     View rootView1;
-    ListView list_interview, list_resume, list_xxx, list_others;
+    GridView list_interview, list_resume, list_xxx, list_others;
     TagAdapter listAdapter_interview, listAdapter_resume, listAdapter_xxx, listAdapter_others;
     List<TagSingle> data_interview;
     List<TagSingle> data_resume;
@@ -76,11 +77,11 @@ public class DayFragment extends Fragment {
 
     public void initialize() {
 
-        scrollView = (ScrollView)rootView1.findViewById(R.id.scrollview);
-        list_interview = (ListView)rootView1.findViewById(R.id.interviewlist);
-        list_resume = (ListView)rootView1.findViewById(R.id.resumelist);
-        list_xxx = (ListView)rootView1.findViewById(R.id.xxxlist);
-        list_others = (ListView)rootView1.findViewById(R.id.otherslist);
+        //scrollView = (ScrollView)rootView1.findViewById(R.id.scrollview);
+        list_interview = (GridView)rootView1.findViewById(R.id.interviewlist);
+        list_resume = (GridView)rootView1.findViewById(R.id.resumelist);
+        list_xxx = (GridView)rootView1.findViewById(R.id.xxxlist);
+        list_others = (GridView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
 
@@ -121,8 +122,8 @@ public class DayFragment extends Fragment {
                     listAdapter_interview.notifyDataSetChanged();
                 }
 
-                DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("resume").child("tag");
-                DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("resume").child("ratio");
+                DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("job search").child("tag");
+                DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("job search").child("ratio");
                 TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
                 myTextView2.setText(ratio_xxx.getValue().toString() + "%");
                 for(DataSnapshot post : snap2.getChildren()){
@@ -131,8 +132,8 @@ public class DayFragment extends Fragment {
                     listAdapter_xxx.notifyDataSetChanged();
                 }
 
-                DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("resume").child("tag");
-                DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("resume").child("ratio");
+                DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
+                DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");
                 TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
                 myTextView3.setText(ratio_other.getValue().toString() + "%");
                 for(DataSnapshot post : snap3.getChildren()){
