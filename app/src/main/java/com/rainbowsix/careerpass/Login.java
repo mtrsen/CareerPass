@@ -76,7 +76,7 @@ public class Login extends MenuActivity implements View.OnClickListener {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-                firebaseAuth.signInWithEmailAndPassword(Email, passWord).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                firebaseAuth.signInWithEmailAndPassword(userName, passWord).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);

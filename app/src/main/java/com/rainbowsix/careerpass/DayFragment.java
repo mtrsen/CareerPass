@@ -1,20 +1,19 @@
 package com.rainbowsix.careerpass;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.content.SharedPreferences;
-import android.content.Context;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,7 +96,11 @@ public class DayFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseDatabaseReference = mFirebaseDatabase.getReference();
 
+        //final String[] date2  = new SimpleDateFormat("dd-MM-yyyy").format(new Date()).split("-");
+        //final String date = date2[2] + date2[1] + date2[0];
         final String date = "20171001";
+        //Log.v("today date", date);
+
         mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
