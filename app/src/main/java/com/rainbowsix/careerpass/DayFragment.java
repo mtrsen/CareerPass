@@ -12,6 +12,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.SharedPreferences;
+import android.content.Context;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +43,8 @@ public class DayFragment extends Fragment {
     FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mFirebaseDatabaseReference;
 
+    String name ;
+
     public DayFragment() {
         // Required empty public constructor
     }
@@ -52,6 +57,10 @@ public class DayFragment extends Fragment {
         rootView1 = inflater.inflate(R.layout.day, container, false);
         initialize();
 
+        SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.USER_NAME, Context.MODE_PRIVATE);
+        //String name = settings.getString("name", "John");
+        String session_id= settings.getString("name", null);
+        name = "aaa";
 
 
         listAdapter_interview = new TagAdapter(getContext(), data_interview);
@@ -75,8 +84,6 @@ public class DayFragment extends Fragment {
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
 
-//        TextView myTextView= (TextView) rootView1.findViewById(R.id.interview_percent);
-//        myTextView.setText(ratio_interview);
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -145,29 +152,30 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
+
                 for(int i = 0; i < data_interview.size(); i++){
                     if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_interview.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_interview.get(i).getTag()).setValue(todo);
                     }
                 }
                 for(int i = 0; i < data_resume.size(); i++){
                     if(Boolean.valueOf(data_resume.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("resume",date,data_resume.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_resume.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_resume.get(i).getTag()).setValue(todo);
 
                     }
                 }
                 for(int i = 0; i < data_xxx.size(); i++){
                     if(Boolean.valueOf(data_xxx.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("xxx",date,data_xxx.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_xxx.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_xxx.get(i).getTag()).setValue(todo);
                     }
                 }
                 for(int i = 0; i < data_others.size(); i++){
                     if(Boolean.valueOf(data_others.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("others",date,data_others.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_others.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_others.get(i).getTag()).setValue(todo);
                     }
                 }
 
