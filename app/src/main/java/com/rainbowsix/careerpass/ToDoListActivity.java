@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +39,6 @@ public class ToDoListActivity extends MenuActivity{
         list = (ListView)findViewById(R.id.list_todo);
         data = new ArrayList<ListSingle>();
         notselected = new ArrayList<ListSingle>();
-        toDoListBlock out;
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

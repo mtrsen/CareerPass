@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:layout_marginRight="8dp"
-            android:buttonTint="@color/newyellow"
             android:layout_gravity="center_vertical"/>
 
 

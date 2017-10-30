@@ -19,7 +19,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:id="@+id/day"
                     android:text="13"
                     android:layout_gravity="center_vertical"
@@ -29,23 +28,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/month"
-                    android:textSize="20sp"
                     android:layout_toRightOf="@id/day"
                     android:layout_gravity="center_vertical"
                     android:text="October"/>
 
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/right"
                     android:id="@+id/right"
                     android:layout_gravity="center_vertical"
                     android:layout_alignParentRight="true"/>
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/left"
                     android:id="@+id/left"
                     android:layout_toLeftOf="@id/right"
@@ -54,207 +52,151 @@
 
             </RelativeLayout>
 
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:scrollbarSize="10dp"
+            android:scrollbars="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="8dp">
+                android:orientation="vertical">
 
                 <RelativeLayout
-                    android:background="@color/lgray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
 
                     <TextView
                         android:id="@+id/interview_text"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Interview"/>
 
                     <TextView
                         android:id="@+id/interview_percent"
-                        android:layout_marginRight="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         />
-                    <View
-                        android:id="@+id/line"
-                        android:background="@color/category"
-                        android:layout_below="@id/interview_percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp" />
 
                 </RelativeLayout>
 
-                <GridView
-                    android:numColumns="2"
-                    android:background="@color/lgray"
+                <ListView
+                    android:background="@color/category"
                     android:id="@+id/interviewlist"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="80dp"
                     android:scrollbars="vertical"/>
 
                 <RelativeLayout
-                    android:background="@color/lgray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
 
                     <TextView
                         android:id="@+id/resume_text"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Resume"/>
 
                     <TextView
                         android:id="@+id/resume_percent"
-                        android:layout_marginRight="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         />
-                    <View
-                        android:background="@color/category"
-                        android:layout_below="@id/resume_percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp" />
 
                 </RelativeLayout>
 
-                <GridView
-                    android:numColumns="2"
-                    android:background="@color/lgray"
+                <ListView
+                    android:background="@color/category"
                     android:id="@+id/resumelist"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="80dp"
                     android:scrollbarSize="3dp"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
                     android:scrollingCache="true"
-                    android:smoothScrollbar="true"
-                    android:layout_marginBottom="16dp"/>
+                    android:smoothScrollbar="true" />
 
                 <RelativeLayout
-                    android:background="@color/lgray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
 
                     <TextView
                         android:id="@+id/xxx_text"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Job Search"/>
 
                     <TextView
                         android:id="@+id/xxx_percent"
-                        android:layout_marginRight="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         />
-                    <View
-                        android:background="@color/category"
-                        android:layout_below="@id/xxx_percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp" />
 
                 </RelativeLayout>
 
-                <GridView
-                    android:numColumns="2"
-                    android:background="@color/lgray"
+                <ListView
+                    android:background="@color/category"
                     android:id="@+id/xxxlist"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:scrollbars="vertical"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_height="80dp"
+                    android:scrollbars="vertical"/>
 
                 <RelativeLayout
-                    android:background="@color/lgray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
 
                     <TextView
                         android:id="@+id/others_text"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Others"/>
 
                     <TextView
                         android:id="@+id/others_percent"
-                        android:layout_marginRight="8dp"
-                        android:textSize="20sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         />
-                    <View
-                        android:background="@color/category"
-                        android:layout_below="@id/others_percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp" />
 
                 </RelativeLayout>
 
-                <GridView
-                    android:numColumns="2"
-                    android:background="@color/lgray"
+                <ListView
+                    android:background="@color/category"
                     android:id="@+id/otherslist"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:scrollbars="vertical"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_height="80dp"
+                    android:scrollbars="vertical"/>
 
             </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/addpost"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/roundedbutton"
-        android:text="+"
-        android:textSize="20sp"
-        android:layout_gravity="right"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/addtolist"
+        android:text="Add to my To-do List"
+        android:layout_gravity="center_horizontal"/>
 
-        <Button
-            android:id="@+id/viewtips"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="View tips"
-            android:layout_gravity="center_horizontal"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/addtolist"
-            android:text="Add to my To-do List"
-            android:background="@color/newyellow"
-            android:layout_gravity="center_horizontal"/>
-
-    </LinearLayout>
-
+    <Button
+        android:id="@+id/addpost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

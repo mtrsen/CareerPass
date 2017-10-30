@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.content.SharedPreferences;
+import android.content.Context;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,7 @@ import java.util.List;
 
 public class DayFragment extends Fragment {
     View rootView1;
-    GridView list_interview, list_resume, list_xxx, list_others;
+    ListView list_interview, list_resume, list_xxx, list_others;
     TagAdapter listAdapter_interview, listAdapter_resume, listAdapter_xxx, listAdapter_others;
     List<TagSingle> data_interview;
     List<TagSingle> data_resume;
@@ -40,6 +42,8 @@ public class DayFragment extends Fragment {
 
     FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mFirebaseDatabaseReference;
+
+    String name ;
 
     public DayFragment() {
         // Required empty public constructor
@@ -53,6 +57,10 @@ public class DayFragment extends Fragment {
         rootView1 = inflater.inflate(R.layout.day, container, false);
         initialize();
 
+        SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.USER_NAME, Context.MODE_PRIVATE);
+        //String name = settings.getString("name", "John");
+        String session_id= settings.getString("name", null);
+        name = "aaa";
 
 
         listAdapter_interview = new TagAdapter(getContext(), data_interview);
@@ -68,16 +76,14 @@ public class DayFragment extends Fragment {
 
     public void initialize() {
 
-        //scrollView = (ScrollView)rootView1.findViewById(R.id.scrollview);
-        list_interview = (GridView)rootView1.findViewById(R.id.interviewlist);
-        list_resume = (GridView)rootView1.findViewById(R.id.resumelist);
-        list_xxx = (GridView)rootView1.findViewById(R.id.xxxlist);
-        list_others = (GridView)rootView1.findViewById(R.id.otherslist);
+        scrollView = (ScrollView)rootView1.findViewById(R.id.scrollview);
+        list_interview = (ListView)rootView1.findViewById(R.id.interviewlist);
+        list_resume = (ListView)rootView1.findViewById(R.id.resumelist);
+        list_xxx = (ListView)rootView1.findViewById(R.id.xxxlist);
+        list_others = (ListView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
 
-//        TextView myTextView= (TextView) rootView1.findViewById(R.id.interview_percent);
-//        myTextView.setText(ratio_interview);
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -115,8 +121,8 @@ public class DayFragment extends Fragment {
                     listAdapter_interview.notifyDataSetChanged();
                 }
 
-                DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("job search").child("tag");
-                DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("job search").child("ratio");
+                DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("resume").child("tag");
+                DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("resume").child("ratio");
                 TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
                 myTextView2.setText(ratio_xxx.getValue().toString() + "%");
                 for(DataSnapshot post : snap2.getChildren()){
@@ -125,8 +131,8 @@ public class DayFragment extends Fragment {
                     listAdapter_xxx.notifyDataSetChanged();
                 }
 
-                DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
-                DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");
+                DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("resume").child("tag");
+                DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("resume").child("ratio");
                 TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
                 myTextView3.setText(ratio_other.getValue().toString() + "%");
                 for(DataSnapshot post : snap3.getChildren()){
@@ -146,29 +152,30 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
+
                 for(int i = 0; i < data_interview.size(); i++){
                     if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_interview.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_interview.get(i).getTag()).setValue(todo);
                     }
                 }
                 for(int i = 0; i < data_resume.size(); i++){
                     if(Boolean.valueOf(data_resume.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("resume",date,data_resume.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_resume.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_resume.get(i).getTag()).setValue(todo);
 
                     }
                 }
                 for(int i = 0; i < data_xxx.size(); i++){
                     if(Boolean.valueOf(data_xxx.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("xxx",date,data_xxx.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_xxx.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_xxx.get(i).getTag()).setValue(todo);
                     }
                 }
                 for(int i = 0; i < data_others.size(); i++){
                     if(Boolean.valueOf(data_others.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("others",date,data_others.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child("aaa").child(data_others.get(i).getTag()).setValue(todo);
+                        mFirebaseDatabase.getReference().child(name).child(data_others.get(i).getTag()).setValue(todo);
                     }
                 }
 
