@@ -149,7 +149,7 @@ public class PostActivity extends AppCompatActivity {
                 final String cate =  m_cat;
 
                 PostCategory userPost = new PostCategory("false",1, m_tag);
-                mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(tag.getText().toString()).setValue(userPost);
+                mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
 
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
