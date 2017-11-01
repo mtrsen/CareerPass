@@ -18,14 +18,15 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Tag title*"/>
+            android:text="Category*"
+            android:layout_gravity="center_vertical"/>
 
-        <EditText
-            android:id="@+id/tag_title"
-            android:backgroundTint="@color/newyellow"
+        <Spinner
+            android:id="@+id/spinner_category"
             android:layout_width="0dp"
             android:layout_weight="4"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
@@ -39,11 +40,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Category*"
-            android:layout_gravity="center_vertical"/>
+            android:text="Tag title*"/>
 
         <Spinner
-            android:id="@+id/spinner_category"
+            android:id="@+id/spinner_tag"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="wrap_content"
