@@ -23,11 +23,16 @@ import static android.R.attr.button;
 public class PostActivity extends AppCompatActivity {
 
     EditText tag, date, tip;
-    Spinner spinner_category;
+    Spinner spinner_category, spinner_tag;
     Button cancel, post;
     String m_tag, m_cat, m_date, m_tip;
 
     private DatabaseReference mDatabaseReference;
+
+    String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
+    String[] resume = {"Write cover letter", "Revise resume", "Go to workshops"};
+    String[] job = {"LinkedIn", "Career fair", "Interview", "Asking professors", "Go to tech talks"};
+    String[] others = {"BBS", "Project overview", "Talking to C2D2"};
 
 
     @Override
@@ -39,19 +44,52 @@ public class PostActivity extends AppCompatActivity {
     }
 
     public void initialize() {
-        tag = (EditText)findViewById(R.id.tag_title);
+        //tag = (EditText)findViewById(R.id.tag_title);
         date = (EditText)findViewById(R.id.date);
         tip = (EditText)findViewById(R.id.tip);
         spinner_category = (Spinner)findViewById(R.id.spinner_category);
+        spinner_tag = (Spinner)findViewById(R.id.spinner_tag);
         cancel = (Button)findViewById(R.id.cancel);
         post = (Button)findViewById(R.id.post);
         String[] items = new String[]{"interview", "resume", "job search", "others"};
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, items);
+
         spinner_category.setAdapter(adapter);
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 m_cat = adapterView.getItemAtPosition(i).toString();
+
+                ArrayAdapter<String> ainterview = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, interviews);
+                ArrayAdapter<String> aresume = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, resume);
+                ArrayAdapter<String> ajob = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, job);
+                ArrayAdapter<String> aothers = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, others);
+
+                if (m_cat.equals("interview")) {
+                    spinner_tag.setAdapter(ainterview);
+                }
+                else if (m_cat.equals("resume")) {
+                    spinner_tag.setAdapter(aresume);
+                }
+                else if (m_cat.equals("job search")) {
+                    spinner_tag.setAdapter(ajob);
+                }
+                else {
+                    spinner_tag.setAdapter(aothers);
+                }
+
+                spinner_tag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        m_tag = adapterView.getItemAtPosition(i).toString();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
 
             @Override
@@ -59,6 +97,37 @@ public class PostActivity extends AppCompatActivity {
 
             }
         });
+
+//        spinner_tag.setAdapter(ainterview);
+//
+//        if (m_cat != null && m_cat.length() > 0) {
+//            if (m_cat.equals("interview")) {
+//                spinner_tag.setAdapter(ainterview);
+//            }
+//            else if (m_cat.equals("resume")) {
+//                spinner_tag.setAdapter(aresume);
+//            }
+//            else if (m_cat.equals("job search")) {
+//                spinner_tag.setAdapter(ajob);
+//            }
+//            else {
+//                spinner_tag.setAdapter(aothers);
+//            }
+//        }
+//
+//        spinner_tag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                m_tag = adapterView.getItemAtPosition(i).toString();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +137,7 @@ public class PostActivity extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(tag.getText().toString())) {
+                if (TextUtils.isEmpty(m_tag)) {
                     Toast.makeText(getApplicationContext(), "Tag cannot be empty!", Toast.LENGTH_LONG).show();
                     return ;
                 }
@@ -79,7 +148,7 @@ public class PostActivity extends AppCompatActivity {
 
                 final String cate =  m_cat;
 
-                PostCategory userPost = new PostCategory("false",1, tag.getText().toString());
+                PostCategory userPost = new PostCategory("false",1, m_tag);
                 mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(tag.getText().toString()).setValue(userPost);
 
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
