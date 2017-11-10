@@ -14,8 +14,8 @@ public class ViewAdapter extends FragmentPagerAdapter {
     public static final String DAILY = "Daily";
 
     public Fragment[] pages = new Fragment[] {
-            new DayFragment(),
-            new DayFragment(),
+            new MonthFragment(),
+            new WeekFragment(),
             new DayFragment()
     };
 

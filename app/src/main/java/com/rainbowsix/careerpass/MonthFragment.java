@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +21,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static android.R.attr.value;
-
 /**
  * Created by lihan on 10/13/2017.
  */
 
-public class DayFragment extends Fragment {
+public class MonthFragment extends Fragment {
     View rootView1;
     GridView list_interview, list_resume, list_xxx, list_others;
     ImageView right, left;
-    TextView day, Month, year;
+    TextView Month, year;
     TagAdapter listAdapter_interview, listAdapter_resume, listAdapter_xxx, listAdapter_others;
     List<TagSingle> data_interview;
     List<TagSingle> data_resume;
@@ -51,7 +47,6 @@ public class DayFragment extends Fragment {
     Date currentTime = Calendar.getInstance().getTime();
     String[] s = currentTime.toString().split(" ");
     String curMon = s[1];
-    int curDate = Integer.parseInt(s[2]);
     int curYear = Integer.parseInt(s[5]);
 
     Button addtolist, addpost;
@@ -62,7 +57,7 @@ public class DayFragment extends Fragment {
 
     String name ;
 
-    public DayFragment() {
+    public MonthFragment() {
         // Required empty public constructor
     }
 
@@ -71,7 +66,7 @@ public class DayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        rootView1 = inflater.inflate(R.layout.day, container, false);
+        rootView1 = inflater.inflate(R.layout.month, container, false);
         initialize();
 
         SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.USER_NAME, Context.MODE_PRIVATE);
@@ -101,9 +96,9 @@ public class DayFragment extends Fragment {
         addpost = (Button)rootView1.findViewById(R.id.addpost);
         left = (ImageView)rootView1.findViewById(R.id.left);
         right = (ImageView)rootView1.findViewById(R.id.right);
-        day = (TextView)rootView1.findViewById(R.id.day);
-        Month = (TextView)rootView1.findViewById(R.id.month);
         year = (TextView)rootView1.findViewById(R.id.year);
+        Month = (TextView)rootView1.findViewById(R.id.month);
+
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -118,9 +113,9 @@ public class DayFragment extends Fragment {
         //final String date = date2[2] + date2[1] + date2[0];
         final String date = "20171001";
         //Log.v("today date", date);
-        day.setText(String.valueOf(curDate));
         Month.setText(curMon);
         year.setText(String.valueOf(curYear));
+
 
         mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -222,19 +217,14 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int tempMon = Arrays.asList(month).indexOf(curMon);
-                if (curDate == 1) {
-                    if (tempMon == 0) {
-                        tempMon = 11;
-                        curYear--;
-                    }
-                    else tempMon--;
-                    curDate = daysOfMonth[tempMon];
+                if (tempMon == 0) {
+                    tempMon = 11;
+                    curYear--;
                 }
-                else curDate--;
+                else tempMon--;
                 curMon = month[tempMon];
-                day.setText(String.valueOf(curDate));
-                Month.setText(curMon);
                 year.setText(String.valueOf(curYear));
+                Month.setText(curMon);
             }
         });
 
@@ -242,19 +232,14 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int tempMon = Arrays.asList(month).indexOf(curMon);
-                if (curDate == daysOfMonth[tempMon]) {
-                    if (tempMon == 11) {
-                        tempMon = 0;
-                        curYear++;
-                    }
-                    else tempMon++;
-                    curDate = 1;
+                if (tempMon == 11) {
+                    tempMon = 0;
+                    curYear++;
                 }
-                else curDate++;
+                else tempMon++;
                 curMon = month[tempMon];
-                day.setText(String.valueOf(curDate));
-                Month.setText(curMon);
                 year.setText(String.valueOf(curYear));
+                Month.setText(curMon);
             }
         });
     }

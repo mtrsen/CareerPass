@@ -2,6 +2,7 @@ package com.rainbowsix.careerpass;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -98,36 +99,6 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-//        spinner_tag.setAdapter(ainterview);
-//
-//        if (m_cat != null && m_cat.length() > 0) {
-//            if (m_cat.equals("interview")) {
-//                spinner_tag.setAdapter(ainterview);
-//            }
-//            else if (m_cat.equals("resume")) {
-//                spinner_tag.setAdapter(aresume);
-//            }
-//            else if (m_cat.equals("job search")) {
-//                spinner_tag.setAdapter(ajob);
-//            }
-//            else {
-//                spinner_tag.setAdapter(aothers);
-//            }
-//        }
-//
-//        spinner_tag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                m_tag = adapterView.getItemAtPosition(i).toString();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,9 +118,31 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 final String cate =  m_cat;
+                final String Date = date.getText().toString();
+                //add post to database and change the count of the post
+                mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        DataSnapshot snap = dataSnapshot.child("post");
+                        if(snap.hasChild(date.getText().toString()) && snap.child(date.getText().toString()).hasChild(cate) && snap.child(date.getText().toString()).child(cate).child("tag").hasChild(m_tag)){
+                            int num = snap.child(date.getText().toString()).child(m_cat).child("count").getValue(Integer.class);
+                            PostCategory userPost = new PostCategory("false",num+1, m_tag);
+                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
 
-                PostCategory userPost = new PostCategory("false",1, m_tag);
-                mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+                        }
+                        else{
+                            PostCategory userPost = new PostCategory("false",1, m_tag);
+                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
 
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -158,12 +151,13 @@ public class PostActivity extends AppCompatActivity {
                         if (snap.hasChild("count")) {
                             int num = snap.child("count").getValue(Integer.class);
                             mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(num+1);
+
                         }
                         else{
                             mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(1);
                             mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("ratio").setValue(1);
                         }
-                  }
+                    }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -178,13 +172,15 @@ public class PostActivity extends AppCompatActivity {
     public void open(View view){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("This post is successfully created!");
-                alertDialogBuilder.setPositiveButton("Got it!",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
-                            }
-                        });
+        alertDialogBuilder.setPositiveButton("Got it!",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finish();
+                        Intent intent = new Intent(PostActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
