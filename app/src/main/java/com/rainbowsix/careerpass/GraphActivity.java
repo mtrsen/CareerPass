@@ -63,68 +63,123 @@ public class GraphActivity extends AppCompatActivity {
                 DataSnapshot snap = dataSnapshot.child("post");
                 for(DataSnapshot date : snap.getChildren()){
                     String time = date.getKey().toString();
+
                     for(DataSnapshot category : date.getChildren()) {
                         for(DataSnapshot tag : category.child("tag").getChildren()) {
                             String cur = tag.child("tag").getValue().toString();
+
                             if(cur.equals(tagName)) {
+
                                 int num = Integer.parseInt(tag.child("count").getValue().toString());
                                 Combo temp = new Combo(num, time);
                                 tagData.add(temp);
+                                Log.v("checktime", Integer.toString(tagData.size()));
                                 break;
                             }
                         }
                     }
                 }
+
+                Log.v("checktime222", Integer.toString(tagData.size()));
+
+                Log.v("checktimeint", tagData.get(0).time);
+                Collections.sort(tagData);
+                List<Combo> result = new ArrayList<>();
+                int ind = 0;
+                for(int i = 0; i < tagData.size(); i++) {
+                    int temp = Integer.parseInt(tagData.get(i).time) / 100;
+                    if(i == 0) {
+                        Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+                        result.add(comp);
+                    } else {
+                        if(temp == Integer.parseInt(result.get(ind).time)) {
+                            result.get(ind).num += tagData.get(i).num;
+                        } else {
+                            Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+                            result.add(comp);
+                            ind++;
+                        }
+                    }
+                }
+
+                graph = (GraphView)findViewById(R.id.graph);
+
+                Log.v("createtime", "" + tagData.size());
+                DataPoint[] data = new DataPoint[result.size()];
+                for (int i = 0; i < data.length; i++) {
+                    Combo point = result.get(i);
+                    data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
+                    Log.v("createtime", point.time);
+                }
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+
+                //series.setTitle("Time trend");
+                graph.getViewport().setScrollable(true); // enables horizontal scrolling
+                graph.getViewport().setScrollableY(true); // enables vertical scrolling
+                graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+                graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+                graph.setTitle("Time Trend");
+                graph.addSeries(series);
+
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+            //showit();
         });
-        Collections.sort(tagData);
-        List<Combo> result = new ArrayList<>();
-        int ind = 0;
-        for(int i = 0; i < tagData.size(); i++) {
-            int temp = Integer.parseInt(tagData.get(i).time) / 100;
-            if(i == 0) {
-                Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
-                result.add(comp);
-            } else {
-                if(temp == Integer.parseInt(result.get(ind).time)) {
-                    result.get(ind).num += tagData.get(i).num;
-                } else {
-                    Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
-                    result.add(comp);
-                    ind++;
-                }
-            }
-        }
-        
-        graph = (GraphView)findViewById(R.id.graph);
 
-        Log.v("createtime", "" + tagData.size());
-        DataPoint[] data = new DataPoint[result.size()];
-        for (int i = 0; i < data.length; i++) {
-            Combo point = result.get(i);
-            data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
-            Log.v("createtime", point.time);
-        }
-
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
-
-        //series.setTitle("Time trend");
-        graph.getViewport().setScrollable(true); // enables horizontal scrolling
-        graph.getViewport().setScrollableY(true); // enables vertical scrolling
-        graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
-
-        graph.setTitle("Time Trend");
-        graph.addSeries(series);
+//        Log.v("checktime222", Integer.toString(tagData.size()));
+//        Collections.sort(tagData);
+//        List<Combo> result = new ArrayList<>();
+//        int ind = 0;
+//        for(int i = 0; i < tagData.size(); i++) {
+//            int temp = Integer.parseInt(tagData.get(i).time) / 100;
+//            if(i == 0) {
+//                Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+//                result.add(comp);
+//            } else {
+//                if(temp == Integer.parseInt(result.get(ind).time)) {
+//                    result.get(ind).num += tagData.get(i).num;
+//                } else {
+//                    Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+//                    result.add(comp);
+//                    ind++;
+//                }
+//            }
+//        }
+//
+//        graph = (GraphView)findViewById(R.id.graph);
+//
+//        Log.v("createtime", "" + tagData.size());
+//        DataPoint[] data = new DataPoint[result.size()];
+//        for (int i = 0; i < data.length; i++) {
+//            Combo point = result.get(i);
+//            data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
+//            Log.v("createtime", point.time);
+//        }
+//
+//        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+//
+//        //series.setTitle("Time trend");
+//        graph.getViewport().setScrollable(true); // enables horizontal scrolling
+//        graph.getViewport().setScrollableY(true); // enables vertical scrolling
+//        graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+//        graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+//
+//        graph.setTitle("Time Trend");
+//        graph.addSeries(series);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+    }
+    private void showit() {
+
     }
 }
