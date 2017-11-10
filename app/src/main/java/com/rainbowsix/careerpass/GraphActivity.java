@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.R.attr.data;
+
 class Combo implements Comparable<Combo> {
     int num;
     String time;
@@ -99,18 +101,17 @@ public class GraphActivity extends AppCompatActivity {
         }
         
         graph = (GraphView)findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6),
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
+
+        Log.v("createtime", "" + tagData.size());
+        DataPoint[] data = new DataPoint[result.size()];
+        for (int i = 0; i < data.length; i++) {
+            Combo point = result.get(i);
+            data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
+            Log.v("createtime", point.time);
+        }
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+
         //series.setTitle("Time trend");
         graph.getViewport().setScrollable(true); // enables horizontal scrolling
         graph.getViewport().setScrollableY(true); // enables vertical scrolling
