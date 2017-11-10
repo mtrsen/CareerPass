@@ -45,7 +45,7 @@ public class GraphActivity extends AppCompatActivity {
             Log.v("tagname", tagName);
         }
 
-        //back = (Button)findViewById(R.id.back);
+        back = (Button)findViewById(R.id.back);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -79,9 +79,20 @@ public class GraphActivity extends AppCompatActivity {
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
+                new DataPoint(4, 6),
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
         //series.setTitle("Time trend");
+        graph.getViewport().setScrollable(true); // enables horizontal scrolling
+        graph.getViewport().setScrollableY(true); // enables vertical scrolling
+        graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+        graph.setTitle("Time Trend");
         graph.addSeries(series);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

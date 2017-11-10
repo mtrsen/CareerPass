@@ -9,10 +9,11 @@
     android:layout_margin="8dp"
     tools:context="com.rainbowsix.careerpass.GraphActivity">
 
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:id="@+id/graph" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
+            android:id="@+id/graph" />
+
 
     <Button
         android:id="@+id/back"
