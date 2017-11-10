@@ -44,7 +44,7 @@ public class GraphActivity extends AppCompatActivity {
             tagName = extras.getString("tag");
             Log.v("tagname", tagName);
         }
-        //map = new HashMap<>();
+
         //back = (Button)findViewById(R.id.back);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
