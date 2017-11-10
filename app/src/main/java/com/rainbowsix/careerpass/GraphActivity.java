@@ -2,6 +2,7 @@ package com.rainbowsix.careerpass;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -25,5 +26,11 @@ public class GraphActivity extends AppCompatActivity {
                 new DataPoint(4, 6)
         });
         graph.addSeries(series);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            String value = extras.getString("tag");
+            Log.v("tagname", value);
+        }
     }
 }

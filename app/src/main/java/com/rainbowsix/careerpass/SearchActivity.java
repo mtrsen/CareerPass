@@ -1,11 +1,13 @@
 package com.rainbowsix.careerpass;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.id.list;
 
 public class SearchActivity extends MenuActivity {
     List<ListSingle> data;
@@ -99,6 +103,14 @@ public class SearchActivity extends MenuActivity {
                     }
                 });
                 searchAdapter.notifyDataSetChanged();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
+                intent.putExtra("tag", searchAdapter.list.get(i).getTag());
+                startActivity(intent);
             }
         });
     }
