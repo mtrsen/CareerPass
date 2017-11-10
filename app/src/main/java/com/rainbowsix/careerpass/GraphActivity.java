@@ -32,22 +32,32 @@ public class GraphActivity extends AppCompatActivity {
     GraphView graph;
     String tagName;
     DatabaseReference databaseReference;
-    Map<String, Combo> map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         tagData = new ArrayList<>();
-        map = new HashMap<>();
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            tagName = extras.getString("tag");
+            Log.v("tagname", tagName);
+        }
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot snap = dataSnapshot.child("post");
-                for(DataSnapshot post : snap.getChildren()){
-                    for(DataSnapshot category : post.getChildren()) {
-                        for(DataSnapshot tag : category.getChildren()) {
-
+                for(DataSnapshot date : snap.getChildren()){
+                    String time = date.getKey().toString();
+                    for(DataSnapshot category : date.getChildren()) {
+                        for(DataSnapshot tag : category.child("tag").getChildren()) {
+                            String cur = tag.child("tag").getValue().toString();
+                            if(cur.equals(tagName)) {
+                                int num = Integer.parseInt(tag.child("count").getValue().toString());
+                                Combo temp = new Combo(num, time);
+                                tagData.add(temp);
+                                break;
+                            }
                         }
                     }
                 }
@@ -68,10 +78,6 @@ public class GraphActivity extends AppCompatActivity {
         });
         graph.addSeries(series);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras !=null) {
-            String value = extras.getString("tag");
-            Log.v("tagname", value);
-        }
+
     }
 }
