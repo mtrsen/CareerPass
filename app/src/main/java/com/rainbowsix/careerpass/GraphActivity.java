@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class Combo implements Comparable<Combo> {
     int num;
@@ -98,8 +97,7 @@ public class GraphActivity extends AppCompatActivity {
                 }
             }
         }
-
-
+        
         graph = (GraphView)findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 1),
