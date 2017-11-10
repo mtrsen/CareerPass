@@ -255,15 +255,6 @@
             android:background="@color/newyellow"
             android:layout_gravity="center_horizontal"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/create"
-            android:text="Create graph"
-            android:background="@color/newyellow"
-            android:layout_gravity="center_horizontal"/>
-
     </LinearLayout>
 
 </LinearLayout>

@@ -1,9 +1,10 @@
 package com.rainbowsix.careerpass;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,7 @@ class Combo{
 public class GraphActivity extends AppCompatActivity {
     List<Combo> tagData;
     GraphView graph;
+    Button back;
     String tagName;
     DatabaseReference databaseReference;
     Map<String, Combo> map;
@@ -39,6 +41,8 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         tagData = new ArrayList<>();
         map = new HashMap<>();
+        back = (Button)findViewById(R.id.back);
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,12 +70,20 @@ public class GraphActivity extends AppCompatActivity {
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
+        //series.setTitle("Time trend");
         graph.addSeries(series);
 
         Bundle extras = getIntent().getExtras();
-        if(extras !=null) {
+        if(extras != null) {
             String value = extras.getString("tag");
             Log.v("tagname", value);
         }
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

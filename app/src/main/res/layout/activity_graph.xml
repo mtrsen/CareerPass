@@ -5,11 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
     tools:context="com.rainbowsix.careerpass.GraphActivity">
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="400dp"
         android:id="@+id/graph" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="back"/>
 
 </LinearLayout>

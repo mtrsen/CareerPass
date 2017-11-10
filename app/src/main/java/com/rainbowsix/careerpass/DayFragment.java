@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class DayFragment extends Fragment {
     List<TagSingle> data_xxx;
     List<TagSingle> data_others;
 
-    Button addtolist, addpost, create;
+    Button addtolist, addpost;
     ScrollView scrollView;
 
     FirebaseDatabase mFirebaseDatabase;
@@ -64,7 +65,6 @@ public class DayFragment extends Fragment {
         String session_id= settings.getString("name", null);
         name = "aaa";
 
-
         listAdapter_interview = new TagAdapter(getContext(), data_interview);
         list_interview.setAdapter(listAdapter_interview);
         listAdapter_resume = new TagAdapter(getContext(), data_resume);
@@ -85,7 +85,6 @@ public class DayFragment extends Fragment {
         list_others = (GridView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
-        create = (Button)rootView1.findViewById(R.id.create);
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -192,14 +191,6 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PostActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GraphActivity.class);
                 startActivity(intent);
             }
         });
