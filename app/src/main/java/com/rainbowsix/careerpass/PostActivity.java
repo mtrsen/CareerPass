@@ -182,6 +182,7 @@ public class PostActivity extends AppCompatActivity {
                     }
                 });
 
+
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

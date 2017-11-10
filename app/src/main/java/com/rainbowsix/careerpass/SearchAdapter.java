@@ -41,4 +41,5 @@ public class SearchAdapter extends ArrayAdapter {
         time.setText("Created: " + single.getTime() + " | " + single.getCat());
         return view;
     }
+
 }

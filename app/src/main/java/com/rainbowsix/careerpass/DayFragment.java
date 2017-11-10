@@ -99,11 +99,14 @@ public class DayFragment extends Fragment {
         list_others = (GridView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
+<<<<<<< HEAD
         left = (ImageView)rootView1.findViewById(R.id.left);
         right = (ImageView)rootView1.findViewById(R.id.right);
         day = (TextView)rootView1.findViewById(R.id.day);
         Month = (TextView)rootView1.findViewById(R.id.month);
         year = (TextView)rootView1.findViewById(R.id.year);
+=======
+>>>>>>> 1c5d1c0cca6b98ad1d4d2a7874ad89fa8ca47881
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -218,6 +221,7 @@ public class DayFragment extends Fragment {
         });
 
 
+<<<<<<< HEAD
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -257,6 +261,8 @@ public class DayFragment extends Fragment {
                 year.setText(String.valueOf(curYear));
             }
         });
+=======
+>>>>>>> 1c5d1c0cca6b98ad1d4d2a7874ad89fa8ca47881
     }
 
 
