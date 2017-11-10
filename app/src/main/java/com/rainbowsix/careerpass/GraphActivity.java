@@ -1,6 +1,7 @@
 package com.rainbowsix.careerpass;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,16 +17,23 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Combo{
+class Combo implements Comparable<Combo> {
     int num;
     String time;
     public Combo(int num, String time) {
         this.num = num;
         this.time = time;
+    }
+
+    @Override
+    public int compareTo(Combo combo) {
+        return Integer.parseInt(time) - Integer.parseInt(combo.time);
     }
 }
 public class GraphActivity extends AppCompatActivity {
@@ -72,6 +80,25 @@ public class GraphActivity extends AppCompatActivity {
 
             }
         });
+        Collections.sort(tagData);
+        List<Combo> result = new ArrayList<>();
+        int ind = 0;
+        for(int i = 0; i < tagData.size(); i++) {
+            int temp = Integer.parseInt(tagData.get(i).time) / 100;
+            if(i == 0) {
+                Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+                result.add(comp);
+            } else {
+                if(temp == Integer.parseInt(result.get(ind).time)) {
+                    result.get(ind).num += tagData.get(i).num;
+                } else {
+                    Combo comp = new Combo(tagData.get(i).num, Integer.toString(temp));
+                    result.add(comp);
+                    ind++;
+                }
+            }
+        }
+
 
         graph = (GraphView)findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
