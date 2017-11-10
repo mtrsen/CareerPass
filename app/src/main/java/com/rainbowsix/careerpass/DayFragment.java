@@ -39,7 +39,7 @@ public class DayFragment extends Fragment {
     List<TagSingle> data_xxx;
     List<TagSingle> data_others;
 
-    Button addtolist, addpost;
+    Button addtolist, addpost, create;
     ScrollView scrollView;
 
     FirebaseDatabase mFirebaseDatabase;
@@ -85,7 +85,7 @@ public class DayFragment extends Fragment {
         list_others = (GridView)rootView1.findViewById(R.id.otherslist);
         addtolist = (Button)rootView1.findViewById(R.id.addtolist);
         addpost = (Button)rootView1.findViewById(R.id.addpost);
-
+        create = (Button)rootView1.findViewById(R.id.create);
 
         data_xxx = new ArrayList<TagSingle>();
         data_resume = new ArrayList<TagSingle>();
@@ -195,6 +195,16 @@ public class DayFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GraphActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
 

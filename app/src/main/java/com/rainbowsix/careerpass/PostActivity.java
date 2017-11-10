@@ -2,6 +2,7 @@ package com.rainbowsix.careerpass;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -183,6 +184,8 @@ public class PostActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
                                 finish();
+                                Intent intent = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(intent);
                             }
                         });
 
