@@ -1,8 +1,10 @@
 package com.rainbowsix.careerpass;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -77,6 +79,7 @@ public class Login extends MenuActivity implements View.OnClickListener {
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 firebaseAuth.signInWithEmailAndPassword(userName, passWord).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
@@ -86,9 +89,13 @@ public class Login extends MenuActivity implements View.OnClickListener {
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_LONG).show();
+                            SharedPreferences sharedPreferences = getSharedPreferences("userInfo",Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username",userName);
+                            editor.apply();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.putExtra("email", userName);
-                            intent.putExtra("name", userName);
+//                            intent.putExtra("email", userName);
+//                            intent.putExtra("name", userName);
                             startActivity(intent);
                         }
                     }
