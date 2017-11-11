@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class WeekFragment extends Fragment {
     View rootView1;
     GridView list_interview, list_resume, list_xxx, list_others;
     ImageView right, left;
-    TextView day, Month, year;
+    TextView dayStart, dayEnd, MonthEnd, MonthStart, year;
     TagAdapter listAdapter_interview, listAdapter_resume, listAdapter_xxx, listAdapter_others;
     List<TagSingle> data_interview;
     List<TagSingle> data_resume;
@@ -49,6 +50,8 @@ public class WeekFragment extends Fragment {
     String curMon = s[1];
     int curDate = Integer.parseInt(s[2]);
     int curYear = Integer.parseInt(s[5]);
+    int preDate;
+    String preMon;
 
     Button addtolist, addpost;
     ScrollView scrollView;
@@ -97,8 +100,10 @@ public class WeekFragment extends Fragment {
         addpost = (Button)rootView1.findViewById(R.id.addpost);
         left = (ImageView)rootView1.findViewById(R.id.left);
         right = (ImageView)rootView1.findViewById(R.id.right);
-        day = (TextView)rootView1.findViewById(R.id.day);
-        Month = (TextView)rootView1.findViewById(R.id.month);
+        dayStart = (TextView)rootView1.findViewById(R.id.day_start);
+        MonthStart = (TextView)rootView1.findViewById(R.id.month_start);
+        dayEnd = (TextView)rootView1.findViewById(R.id.day_end);
+        MonthEnd = (TextView) rootView1.findViewById(R.id.month_end);
         year = (TextView)rootView1.findViewById(R.id.year);
 
         data_xxx = new ArrayList<TagSingle>();
@@ -114,10 +119,11 @@ public class WeekFragment extends Fragment {
         //final String date = date2[2] + date2[1] + date2[0];
         final String date = "20171001";
         //Log.v("today date", date);
-        day.setText(String.valueOf(curDate));
-        Month.setText(curMon);
+        dayEnd.setText(String.valueOf(curDate));
+        MonthEnd.setText(curMon);
         year.setText(String.valueOf(curYear));
 
+        setPreWeek(curDate, month, curMon, daysOfMonth, curYear);
         mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -217,6 +223,8 @@ public class WeekFragment extends Fragment {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dayEnd.setText(String.valueOf(curDate));
+                MonthEnd.setText(curMon);
                 int tempMon = Arrays.asList(month).indexOf(curMon);
                 if (curDate <= 7) {
                     if (tempMon == 0) {
@@ -228,8 +236,8 @@ public class WeekFragment extends Fragment {
                 }
                 else curDate -= 7;
                 curMon = month[tempMon];
-                day.setText(String.valueOf(curDate));
-                Month.setText(curMon);
+                dayStart.setText(String.valueOf(curDate));
+                MonthStart.setText(curMon);
                 year.setText(String.valueOf(curYear));
             }
         });
@@ -237,6 +245,8 @@ public class WeekFragment extends Fragment {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dayStart.setText(String.valueOf(curDate));
+                MonthStart.setText(curMon);
                 int tempMon = Arrays.asList(month).indexOf(curMon);
                 if (curDate + 7 > daysOfMonth[tempMon]) {
                     curDate = curDate + 7 - daysOfMonth[tempMon];
@@ -248,11 +258,53 @@ public class WeekFragment extends Fragment {
                 }
                 else curDate += 7;
                 curMon = month[tempMon];
-                day.setText(String.valueOf(curDate));
-                Month.setText(curMon);
+                dayEnd.setText(String.valueOf(curDate));
+                MonthEnd.setText(curMon);
                 year.setText(String.valueOf(curYear));
             }
         });
+    }
+
+    private void setPreWeek(int curDate, String[] month, String curMon, int[] daysOfMonth,
+                            int curYear) {
+        dayEnd.setText(String.valueOf(curDate));
+        MonthEnd.setText(curMon);
+        int tempMon = Arrays.asList(month).indexOf(curMon);
+        if (curDate <= 7) {
+            if (tempMon == 0) {
+                tempMon = 11;
+                curYear--;
+            }
+            else tempMon--;
+            curDate = curDate - 7 + daysOfMonth[tempMon];
+        }
+        else curDate -= 7;
+        curMon = month[tempMon];
+        dayStart.setText(String.valueOf(curDate));
+        MonthStart.setText(curMon);
+        year.setText(String.valueOf(curYear));
+        System.out.println(curDate);
+        System.out.println(curMon);
+    }
+
+    private void setNextWeek(int curDate, String[] month, String curMon, int[] daysOfMonth,
+                             int curYear) {
+        dayStart.setText(String.valueOf(curDate));
+        MonthStart.setText(curMon);
+        int tempMon = Arrays.asList(month).indexOf(curMon);
+        if (curDate + 7 > daysOfMonth[tempMon]) {
+            curDate = curDate + 7 - daysOfMonth[tempMon];
+            if (tempMon == 11) {
+                tempMon = 0;
+                curYear++;
+            }
+            else tempMon++;
+        }
+        else curDate += 7;
+        curMon = month[tempMon];
+        dayEnd.setText(String.valueOf(curDate));
+        MonthEnd.setText(curMon);
+        year.setText(String.valueOf(curYear));
     }
 
 
