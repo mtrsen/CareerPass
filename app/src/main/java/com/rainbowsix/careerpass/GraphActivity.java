@@ -1,5 +1,6 @@
 package com.rainbowsix.careerpass;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -157,7 +157,7 @@ public class GraphActivity extends AppCompatActivity {
                 graph.getGridLabelRenderer().setTextSize(30);
                 graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(30);
                 graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(30);
-                graph.getGridLabelRenderer().setLabelsSpace(10);
+                //graph.getGridLabelRenderer().setLabelsSpace(10);
 //
 //                graph.getViewport().setMinX(Integer.parseInt(result.get(0).time));
 //                graph.getViewport().setMaxX(Integer.parseInt(result.get(result.size() - 1).time));
@@ -185,7 +185,7 @@ public class GraphActivity extends AppCompatActivity {
 
                 graph.addSeries(series);
                 series.setDrawBackground(true);
-                series.setBackgroundColor(250);
+                //series.setBackgroundColor(20);
             }
 
             @Override
@@ -196,7 +196,11 @@ public class GraphActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tagData.clear();
+                graph.destroyDrawingCache();
                 finish();
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
             }
         });
     }
