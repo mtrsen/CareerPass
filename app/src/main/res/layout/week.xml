@@ -19,27 +19,52 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/month_start"
                     android:textSize="20sp"
-                    android:id="@+id/day"
-                    android:text="01"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="16dp"/>
+                    android:text="Oct"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/month"
                     android:textSize="20sp"
-                    android:layout_toRightOf="@id/day"
+                    android:id="@+id/day_start"
+                    android:layout_toRightOf="@id/month"
+                    android:text="01"
                     android:layout_gravity="center_vertical"
-                    android:text="October"/>
+                    android:layout_marginLeft="45dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="-"
+                    android:layout_marginLeft="75dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:id="@+id/month_end"
+                    android:layout_marginLeft="90dp"
+                    android:text="Oct"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:id="@+id/day_end"
+                    android:layout_toRightOf="@id/month"
+                    android:text="01"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="130dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/year"
                     android:textSize="20sp"
-                    android:layout_marginLeft="120dp"
+                    android:layout_marginLeft="160dp"
                     android:text="1993" />
 
 

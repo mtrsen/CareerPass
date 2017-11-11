@@ -49,6 +49,14 @@ public class MonthFragment extends Fragment {
     String curMon = s[1];
     int curYear = Integer.parseInt(s[5]);
 
+
+    //current date to add to to do list
+    Date nowTime = Calendar.getInstance().getTime();
+    String[] now = nowTime.toString().split(" ");
+    String nowMon = now[1];
+    int nowDate = Integer.parseInt(now[2]);
+    int nowYear = Integer.parseInt(now[5]);
+
     Button addtolist, addpost;
     ScrollView scrollView;
 
@@ -70,7 +78,6 @@ public class MonthFragment extends Fragment {
         initialize();
 
         SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.USER_NAME, Context.MODE_PRIVATE);
-        //String name = settings.getString("name", "John");
         String session_id= settings.getString("name", null);
         name = "aaa";
 
@@ -105,71 +112,18 @@ public class MonthFragment extends Fragment {
         data_interview = new ArrayList<TagSingle>();
         data_others = new ArrayList<TagSingle>();
 
-        //===Read from database
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseDatabaseReference = mFirebaseDatabase.getReference();
-
-        //final String[] date2  = new SimpleDateFormat("dd-MM-yyyy").format(new Date()).split("-");
-        //final String date = date2[2] + date2[1] + date2[0];
-        final String date = "20171001";
-        //Log.v("today date", date);
         Month.setText(curMon);
         year.setText(String.valueOf(curYear));
 
+        //===Read from database
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseDatabaseReference = mFirebaseDatabase.getReference();
+        //   final String date = "20171001";
+        List<String> dateList = getDateList(nowYear,nowMon);
+        setContent(dateList);
 
-        mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                DataSnapshot snap = dataSnapshot.child("post").child(date).child("resume").child("tag");
-
-                DataSnapshot ratio_resume = dataSnapshot.child("post").child(date).child("resume").child("ratio");
-                TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
-                myTextView.setText(ratio_resume.getValue().toString() + "%");
-
-                for(DataSnapshot post : snap.getChildren()){
-                    PostCategory postCategory = post.getValue(PostCategory.class);
-                    data_resume.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
-                    listAdapter_resume.notifyDataSetChanged();
-                }
-
-                DataSnapshot snap1 = dataSnapshot.child("post").child(date).child("interview").child("tag");
-                DataSnapshot ratio_interview = dataSnapshot.child("post").child(date).child("interview").child("ratio");
-                TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
-                myTextView1.setText(ratio_interview.getValue().toString() + "%");
-                for(DataSnapshot post : snap1.getChildren()){
-                    PostCategory postCategory = post.getValue(PostCategory.class);
-                    data_interview.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
-                    listAdapter_interview.notifyDataSetChanged();
-                }
-
-                DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("job search").child("tag");
-                DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("job search").child("ratio");
-                TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
-                myTextView2.setText(ratio_xxx.getValue().toString() + "%");
-                for(DataSnapshot post : snap2.getChildren()){
-                    PostCategory postCategory = post.getValue(PostCategory.class);
-                    data_xxx.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
-                    listAdapter_xxx.notifyDataSetChanged();
-                }
-
-                DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
-                DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");
-                TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
-                myTextView3.setText(ratio_other.getValue().toString() + "%");
-                for(DataSnapshot post : snap3.getChildren()){
-                    PostCategory postCategory = post.getValue(PostCategory.class);
-                    data_others.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
-                    listAdapter_others.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        //initialize for current month to add to to do list
+        final String date = Integer.toString(nowYear) + Integer.toString(Arrays.asList(month).indexOf(nowMon) + 1) + (nowDate < 10 ? "0" + nowDate : nowDate);
         addtolist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,6 +179,10 @@ public class MonthFragment extends Fragment {
                 curMon = month[tempMon];
                 year.setText(String.valueOf(curYear));
                 Month.setText(curMon);
+
+                List<String> dateList = getDateList(curYear,curMon);
+                setContent(dateList);
+
             }
         });
 
@@ -240,8 +198,105 @@ public class MonthFragment extends Fragment {
                 curMon = month[tempMon];
                 year.setText(String.valueOf(curYear));
                 Month.setText(curMon);
+                List<String> dateList = getDateList(curYear,curMon);
+                setContent(dateList);
             }
         });
+    }
+
+    public List<String> getDateList(int yearInput, String monthInput){
+        List<String> dateList = new ArrayList<String>();
+        int monIndex = Arrays.asList(month).indexOf(monthInput) + 1;
+        int lastDay = daysOfMonth[monIndex-1];
+        for(int i = 1; i <= lastDay ; i++){
+            String dataCur = i < 10 ? "0" + Integer.toString(i) : Integer.toString(i);
+            String newDate = Integer.toString(yearInput) + Integer.toString(monIndex) + dataCur;
+            dateList.add(newDate);
+        }
+        return dateList;
+    }
+
+    public void setContent(List<String> DateList){
+        data_resume.clear();
+        data_interview.clear();
+        data_others.clear();
+        data_xxx.clear();
+        TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
+        myTextView.setText("");
+        TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
+        myTextView1.setText("");
+        TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
+        myTextView2.setText("");
+        TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
+        myTextView3.setText("");
+
+
+
+        final List<String> dateList = DateList;
+        mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(String date : dateList){
+                    if(dataSnapshot.child("post").hasChild(date)){
+
+                        if(dataSnapshot.child("post").child(date).hasChild("resume")){
+                            DataSnapshot snap = dataSnapshot.child("post").child(date).child("resume").child("tag");
+                            DataSnapshot ratio_resume = dataSnapshot.child("post").child(date).child("resume").child("ratio");
+                            TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
+                            myTextView.setText(ratio_resume.getValue().toString() + "%");
+
+                            for(DataSnapshot post : snap.getChildren()){
+                                PostCategory postCategory = post.getValue(PostCategory.class);
+                                data_resume.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
+                            }
+                        }
+                        if(dataSnapshot.child("post").child(date).hasChild("interview")){
+
+                            DataSnapshot snap1 = dataSnapshot.child("post").child(date).child("interview").child("tag");
+                            DataSnapshot ratio_interview = dataSnapshot.child("post").child(date).child("interview").child("ratio");
+                            TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
+                            myTextView1.setText(ratio_interview.getValue().toString() + "%");
+                            for(DataSnapshot post : snap1.getChildren()){
+                                PostCategory postCategory = post.getValue(PostCategory.class);
+                                data_interview.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
+                            }
+                        }
+                        if(dataSnapshot.child("post").child(date).hasChild("job search")){
+                            DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("job search").child("tag");
+                            DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("job search").child("ratio");
+                            TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
+                            myTextView2.setText(ratio_xxx.getValue().toString() + "%");
+                            for(DataSnapshot post : snap2.getChildren()){
+                                PostCategory postCategory = post.getValue(PostCategory.class);
+                                data_xxx.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
+                            }
+                        }
+                        //listAdapter_xxx.notifyDataSetChanged();
+                        if(dataSnapshot.child("post").child(date).hasChild("others")){
+                            DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
+                            DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");
+                            TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
+                            myTextView3.setText(ratio_other.getValue().toString() + "%");
+                            for(DataSnapshot post : snap3.getChildren()){
+                                PostCategory postCategory = post.getValue(PostCategory.class);
+                                data_others.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
+                            }
+                        }
+                    }
+                }
+                listAdapter_resume.notifyDataSetChanged();
+                listAdapter_others.notifyDataSetChanged();
+                listAdapter_xxx.notifyDataSetChanged();
+                listAdapter_interview.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
