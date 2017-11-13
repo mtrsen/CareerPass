@@ -68,8 +68,9 @@
             android:layout_width="0dp"
             android:layout_weight="4"
             android:backgroundTint="@color/newyellow"
-            android:hint="year/month/day"
-            android:layout_height="wrap_content" />
+            android:hint="Month/Day/Year"
+            android:layout_height="wrap_content"
+            android:inputType="date"/>
 
     </LinearLayout>
 
