@@ -15,12 +15,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import static android.R.id.list;
 
 public class SearchActivity extends MenuActivity {
     List<ListSingle> data;
+    HashSet<String> visited;
     SearchView searchView;
     ListView listView;
     SearchAdapter searchAdapter;
@@ -37,6 +37,7 @@ public class SearchActivity extends MenuActivity {
 
     public void initialize() {
         data = new ArrayList<>();
+        visited = new HashSet<>();
         searchView = (SearchView)findViewById(R.id.searchView);
         listView = (ListView)findViewById(R.id.listview);
         searchAdapter = new SearchAdapter(SearchActivity.this, data);
@@ -47,7 +48,6 @@ public class SearchActivity extends MenuActivity {
             @Override
             public void onClick(View view) {
                 data.clear();
-
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -58,9 +58,10 @@ public class SearchActivity extends MenuActivity {
                             if(post.hasChild("interview")){
                                 for(DataSnapshot single :  post.child("interview").child("tag").getChildren()) {
                                     String tag = single.child("tag").getValue().toString();
-                                    if(contains(query,tag)){
+                                    if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"interview",Boolean.parseBoolean(add)));
+                                        visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
                                 }
@@ -68,9 +69,10 @@ public class SearchActivity extends MenuActivity {
                             if(post.hasChild("job search")){
                                 for(DataSnapshot single :  post.child("job search").child("tag").getChildren()) {
                                     String tag = single.child("tag").getValue().toString();
-                                    if(contains(query,tag)){
+                                    if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"job search",Boolean.parseBoolean(add)));
+                                        visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
                                 }
@@ -78,9 +80,10 @@ public class SearchActivity extends MenuActivity {
                             if(post.hasChild("resume")){
                                 for(DataSnapshot single :  post.child("resume").child("tag").getChildren()) {
                                     String tag = single.child("tag").getValue().toString();
-                                    if(contains(query,tag)){
+                                    if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"resume",Boolean.parseBoolean(add)));
+                                        visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
                                 }
@@ -88,9 +91,10 @@ public class SearchActivity extends MenuActivity {
                             if(post.hasChild("others")){
                                 for(DataSnapshot single :  post.child("others").child("tag").getChildren()) {
                                     String tag = single.child("tag").getValue().toString();
-                                    if(contains(query,tag)){
+                                    if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"others",Boolean.parseBoolean(add)));
+                                        visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
                                 }
