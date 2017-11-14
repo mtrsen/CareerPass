@@ -27,6 +27,7 @@ public class Register extends MenuActivity implements View.OnClickListener {
     Button button;
     EditText username, password, email, enrollment;
     ProgressBar progressBar;
+    Button button1;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     @Override
@@ -43,6 +44,14 @@ public class Register extends MenuActivity implements View.OnClickListener {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         button.setOnClickListener(this);
+        button1 = (Button) findViewById(R.id.back);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
     }
 
     @Override
@@ -91,6 +100,8 @@ public class Register extends MenuActivity implements View.OnClickListener {
                     }
                 });
     }
+
+
 //    private void writeNewUser(String username, String email, String password, String enrollment) {
 //        User newUser = new User(username, email, password, enrollment);
 //        databaseReference.child("User").child(username).setValue(newUser);

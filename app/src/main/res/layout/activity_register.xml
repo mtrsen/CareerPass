@@ -2,57 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:padding="20dp">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="164dp"
+        android:src="@drawable/logo"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     <EditText
         android:id="@+id/username"
         android:inputType="text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="E-mail"
         android:paddingTop="10dp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     <EditText
         android:id="@+id/email"
         android:inputType="textEmailAddress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
         android:paddingTop="10dp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:inputType="textPassword"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="College Enroll Year"
         android:paddingTop="10dp"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     <EditText
         android:id="@+id/grade"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     <ProgressBar
         android:id="@+id/progressRegister"
@@ -61,9 +71,24 @@
         android:visibility="invisible"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/register"
-        android:text="Register "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/newyellow"
+            android:text="Register " />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:text="back"
+            android:id="@+id/back"
+            android:layout_marginLeft="10dp"
+            />
+    </LinearLayout>
 </LinearLayout>
