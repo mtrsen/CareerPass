@@ -20,6 +20,7 @@ import java.util.List;
 
 public class SearchActivity extends MenuActivity {
     List<ListSingle> data;
+    ArrayList<String> result;
     HashSet<String> visited;
     SearchView searchView;
     ListView listView;
@@ -37,6 +38,7 @@ public class SearchActivity extends MenuActivity {
 
     public void initialize() {
         data = new ArrayList<>();
+        result = new ArrayList<>();
         visited = new HashSet<>();
         searchView = (SearchView)findViewById(R.id.searchView);
         listView = (ListView)findViewById(R.id.listview);
@@ -61,6 +63,7 @@ public class SearchActivity extends MenuActivity {
                                     if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"interview",Boolean.parseBoolean(add)));
+                                        result.add(tag);
                                         visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
@@ -72,6 +75,7 @@ public class SearchActivity extends MenuActivity {
                                     if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"job search",Boolean.parseBoolean(add)));
+                                        result.add(tag);
                                         visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
@@ -83,6 +87,7 @@ public class SearchActivity extends MenuActivity {
                                     if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"resume",Boolean.parseBoolean(add)));
+                                        result.add(tag);
                                         visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
@@ -94,6 +99,7 @@ public class SearchActivity extends MenuActivity {
                                     if(contains(query,tag) && !visited.contains(tag)){
                                         String add = single.child("add").getValue().toString();
                                         data.add(new ListSingle(tag,date,"others",Boolean.parseBoolean(add)));
+                                        result.add(tag);
                                         visited.add(tag);
                                         searchAdapter.notifyDataSetChanged();
                                     }
@@ -113,7 +119,11 @@ public class SearchActivity extends MenuActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
-                intent.putExtra("tag", searchAdapter.list.get(i).getTag());
+                //intent.putExtra("tag", searchAdapter.list.get(i).getTag());
+                Bundle extras = new Bundle();
+                extras.putString("tag", searchAdapter.list.get(i).getTag());
+                extras.putSerializable("result", result);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
