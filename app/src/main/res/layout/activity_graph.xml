@@ -9,6 +9,13 @@
     android:layout_margin="8dp"
     tools:context="com.rainbowsix.careerpass.GraphActivity">
 
+        <TextView
+            android:id="@+id/currenttag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_marginBottom="16dp"/>
+
         <com.jjoe64.graphview.GraphView
             android:layout_width="wrap_content"
             android:layout_height="400dp"
