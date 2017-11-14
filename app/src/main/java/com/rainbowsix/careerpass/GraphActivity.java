@@ -1,28 +1,30 @@
 package com.rainbowsix.careerpass;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+
+import static android.R.attr.data;
 
 class Combo implements Comparable<Combo> {
     int num;
@@ -37,24 +39,27 @@ class Combo implements Comparable<Combo> {
         return Integer.parseInt(time) - Integer.parseInt(combo.time);
     }
 }
-public class GraphActivity extends AppCompatActivity {
+public class GraphActivity extends MenuActivity {
     List<Combo> tagData;
-    GraphView graph;
     Button back;
     String tagName;
     DatabaseReference databaseReference;
+    TextView currenttag;
     String[] month = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        getLayoutInflater().inflate(R.layout.activity_graph, frameLayout);
+        //setContentView(R.layout.activity_graph);
         tagData = new ArrayList<>();
+        currenttag = (TextView)findViewById(R.id.currenttag);
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
             tagName = extras.getString("tag");
-            Log.v("tagname", tagName);
+            currenttag.setText(tagName);
+            //Log.v("tagname", tagName);
         }
-
+        final GraphView graph = (GraphView)findViewById(R.id.graph);
         back = (Button)findViewById(R.id.back);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -63,7 +68,7 @@ public class GraphActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot snap = dataSnapshot.child("post");
                 for(DataSnapshot date : snap.getChildren()){
-                    String time = date.getKey().toString();
+                    String time = date.getKey().toString().substring(4);
 
                     for(DataSnapshot category : date.getChildren()) {
                         for(DataSnapshot tag : category.child("tag").getChildren()) {
@@ -101,91 +106,35 @@ public class GraphActivity extends AppCompatActivity {
                     }
                 }
 
-                graph = (GraphView)findViewById(R.id.graph);
+
 
                 //Log.v("createtime", "" + tagData.size());
-                DataPoint[] data = new DataPoint[result.size()];
-                Date small = null;
-                Date large = null;
-                int countsmall = Integer.MAX_VALUE;
-                int countlarge = Integer.MIN_VALUE;
+                  DataPoint[] data = new DataPoint[result.size()];
+//                Date small = null;
+//                Date large = null;
+                  int countsmall = Integer.MAX_VALUE;
+                  int countlarge = Integer.MIN_VALUE;
                 for (int i = 0; i < data.length; i++) {
                     Combo point = result.get(i);
-                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM");
-                    String temp = point.time.substring(0, 4) + "-" + point.time.substring(4);
-                    Date t;
-                    try {
-                        t = ft.parse(temp);
-                    } catch (ParseException e) {
-                        t = null;
-                    }
-                    if (i == 0) small = t;
-                    if (i == data.length - 1) large = t;
-                    data[i] = new DataPoint(t, point.num);
+//                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM");
+//                    String temp = point.time.substring(0, 4) + "-" + point.time.substring(4);
+//                    Date t;
+//                    try {
+//                        t = ft.parse(temp);
+//                    } catch (ParseException e) {
+//                        t = null;
+//                    }
+//                    if (i == 0) small = t;
+//                    if (i == data.length - 1) large = t;
+                    data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
                     countsmall = Math.min(countsmall, point.num);
                     countlarge = Math.max(countlarge, point.num);
-                    Log.v("createtime", "" + temp);
+                    //Log.v("createtime", "" + Integer.parseInt(point.time));
                 }
 
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
 
-                //series.setTitle("Time trend");
-                graph.getViewport().setScrollable(true); // enables horizontal scrolling
-                graph.getViewport().setScrollableY(true); // enables vertical scrolling
-                graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-                graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
-
-
-                graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-                graph.getGridLabelRenderer().setNumHorizontalLabels(6); // only 4 because of the space
-                graph.getGridLabelRenderer().setNumVerticalLabels(6);
-
-// set manual x bounds to have nice steps
-                graph.getViewport().setMinX(small.getTime());
-                graph.getViewport().setMaxX(large.getTime());
-                graph.getViewport().setXAxisBoundsManual(true);
-
-                graph.getViewport().setYAxisBoundsManual(true);
-                graph.getViewport().setMinY(countsmall);
-                graph.getViewport().setMaxY(countlarge);
-
-// as we use dates as labels, the human rounding to nice readable numbers
-// is not necessary
-                graph.getGridLabelRenderer().setHumanRounding(false);
-                graph.getGridLabelRenderer().setHorizontalAxisTitle("Month");
-                graph.getGridLabelRenderer().setVerticalAxisTitle("Post count");
-                graph.getGridLabelRenderer().setTextSize(30);
-                graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(30);
-                graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(30);
-                //graph.getGridLabelRenderer().setLabelsSpace(10);
-//
-//                graph.getViewport().setMinX(Integer.parseInt(result.get(0).time));
-//                graph.getViewport().setMaxX(Integer.parseInt(result.get(result.size() - 1).time));
-//                graph.getViewport().setXAxisBoundsManual(true);
-//
-                graph.setTitle("Time Trend");
-
-//                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-//                    @Override
-//                    public String formatLabel(double value, boolean isValueX) {
-//                        if (isValueX) {
-//                            // show normal x values
-//                            String prev = super.formatLabel(value, isValueX);
-//                            //int m = Integer.parseInt(prev.substring(5));
-//                            //String year = prev.substring(0, 3) + prev.charAt(4);
-//                            Log.v("currentmonth", "" + prev);
-//                            //return month[m];
-//                            return prev;
-//                        } else {
-//                            // show currency for y values
-//                            return super.formatLabel(value, isValueX);
-//                        }
-//                    }
-//                });
-
-                graph.addSeries(series);
-                series.setDrawBackground(true);
                 //series.setBackgroundColor(20);
+                draw(graph, data, countsmall, countlarge);
             }
 
             @Override
@@ -197,11 +146,79 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagData.clear();
-                graph.destroyDrawingCache();
+                //graph.destroyDrawingCache();
                 finish();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
+
             }
         });
     }
+
+    public void draw(GraphView graph, DataPoint[] data, int countsmall, int countlarge) {
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data);
+
+        //series.setTitle("Time trend");
+        //graph.getViewport().setScrollable(true); // enables horizontal scrolling
+        //graph.getViewport().setScrollableY(true); // enables vertical scrolling
+        graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
+        //graph.getGridLabelRenderer().setNumHorizontalLabels(12); // only 4 because of the space
+        //graph.getGridLabelRenderer().setNumVerticalLabels(6);
+
+// set manual x bounds to have nice steps
+        graph.getViewport().setMinX(1);
+        graph.getViewport().setMaxX(12);
+        graph.getViewport().setXAxisBoundsManual(true);
+
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(countsmall);
+        graph.getViewport().setMaxY(countlarge);
+
+// as we use dates as labels, the human rounding to nice readable numbers
+// is not necessary
+        graph.getGridLabelRenderer().setHumanRounding(false);
+        //graph.getGridLabelRenderer().setHorizontalAxisTitle("Month");
+        //graph.getGridLabelRenderer().setVerticalAxisTitle("Post count");
+        graph.getGridLabelRenderer().setTextSize(30);
+        //graph.getGridLabelRenderer().setHorizontalAxisTitleTextSize(30);
+        //graph.getGridLabelRenderer().setVerticalAxisTitleTextSize(30);
+        //graph.getGridLabelRenderer().setLabelsSpace(10);
+//
+//                graph.getViewport().setMinX(Integer.parseInt(result.get(0).time));
+//                graph.getViewport().setMaxX(Integer.parseInt(result.get(result.size() - 1).time));
+//                graph.getViewport().setXAxisBoundsManual(true);
+//
+        //graph.setTitle("Time Trend");
+
+                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+                    @Override
+                    public String formatLabel(double value, boolean isValueX) {
+                        if (isValueX) {
+                            // show normal x values
+                            String prev = super.formatLabel(value, isValueX);
+                            //Log.v("xxx", prev);
+                            if (prev.indexOf(".") != -1) prev = prev.substring(0, prev.indexOf("."));
+                            int m = Integer.parseInt(prev);
+                            //String year = prev.substring(0, 3) + prev.charAt(4);
+                            //Log.v("currentmonth", "" + m);
+                            return month[m];
+                            //return prev;
+                        } else {
+                            // show currency for y values
+                            return super.formatLabel(value, isValueX);
+                        }
+                    }
+                });
+
+        graph.addSeries(series);
+        series.setDrawBackground(true);
+        //Log.v("nexttime", "" + result.size());
+        series.setBackgroundColor(Color.argb(255, 255, 175, 64));
+    }
+
+
 }
