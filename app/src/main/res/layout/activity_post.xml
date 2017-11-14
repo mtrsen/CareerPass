@@ -5,28 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
+    android:background="@color/newyellow"
     tools:context="com.rainbowsix.careerpass.PostActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="16dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Category*"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center_vertical"/>
 
         <Spinner
             android:id="@+id/spinner_category"
             android:layout_width="0dp"
             android:layout_weight="4"
+            android:popupBackground="@color/newyellow"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 
@@ -34,19 +40,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_margin="16dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Tag title*"/>
+            android:text="Tag title*"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <Spinner
             android:id="@+id/spinner_tag"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="wrap_content"
+            android:popupBackground="@color/newyellow"
             android:spinnerMode="dropdown" />
 
     </LinearLayout>
@@ -55,76 +63,60 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_margin="16dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Date*"/>
+            android:text="Date*"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <EditText
             android:id="@+id/date"
             android:layout_width="0dp"
             android:layout_weight="4"
-            android:backgroundTint="@color/newyellow"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
             android:hint="Month/Day/Year"
             android:layout_height="wrap_content"
             android:inputType="date"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Tips"/>
-
-        <EditText
-            android:id="@+id/tip"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:backgroundTint="@color/newyellow"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="*Required fields"/>
+        android:text="*Required fields"
+        android:layout_margin="16dp"
+        android:textColor="@color/colorPrimaryDark"/>
 
-    <ListView
-        android:id="@+id/posted"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
 
-    </ListView>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
 
         <Button
             android:id="@+id/cancel"
-            android:text="Cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:background="@color/colorPrimary"
+            android:text="Cancel"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
         <Button
             android:id="@+id/post"
             android:text="Post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"/>
 
     </RelativeLayout>
 

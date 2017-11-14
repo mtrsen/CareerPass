@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,10 +27,10 @@ import static android.R.attr.button;
 
 public class PostActivity extends AppCompatActivity {
 
-    EditText tag, date, tip;
+    EditText tag, date ;
     Spinner spinner_category, spinner_tag;
     Button cancel, post;
-    String m_tag, m_cat, m_date, m_tip;
+    String m_tag, m_cat;
     private DatabaseReference mDatabaseReference;
 
     String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
@@ -42,6 +43,13 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+
+        getWindow().setLayout((int)(width * 0.85), (int)(height * 0.85));
         initialize();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     }
@@ -67,7 +75,6 @@ public class PostActivity extends AppCompatActivity {
                     editable.append('/');
             }
         });
-        tip = (EditText)findViewById(R.id.tip);
         spinner_category = (Spinner)findViewById(R.id.spinner_category);
         spinner_tag = (Spinner)findViewById(R.id.spinner_tag);
         cancel = (Button)findViewById(R.id.cancel);
