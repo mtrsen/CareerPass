@@ -146,7 +146,13 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 final String cate =  m_cat;
-                final String Date = date.getText().toString();
+                //final String Date = date.getText().toString();
+
+                StringBuilder sb = new StringBuilder();
+                sb.append(date.getText().toString().substring(6) + date.getText().toString().substring(0, 2)
+                        + date.getText().toString().substring(3, 5));
+                final String Date = sb.toString();
+
 
                 //add post to database and change the count of the post
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -184,7 +190,6 @@ public class PostActivity extends AppCompatActivity {
                         else{
                             mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(1);
                             mDatabaseReference.child("post").child(Date).child(cate).child("ratio").setValue(1);
-
                             mDatabaseReference.child("post").child(Date).child(cate).child("name").setValue(cate);
                         }
 

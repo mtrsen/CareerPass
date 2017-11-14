@@ -131,7 +131,6 @@ public class MonthFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
-
                 for(int i = 0; i < data_interview.size(); i++){
                     if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
                         toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
@@ -247,12 +246,9 @@ public class MonthFragment extends Fragment {
                     if(dataSnapshot.child("post").hasChild(date)){
                         if(dataSnapshot.child("post").child(date).hasChild("resume")){
                             DataSnapshot snap = dataSnapshot.child("post").child(date).child("resume").child("tag");
-                            DataSnapshot ratio_resume = dataSnapshot.child("post").child(date).child("resume").child("ratio");
-                            TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
-                            myTextView.setText(ratio_resume.getValue().toString() + "%");
+
                             for(DataSnapshot post : snap.getChildren()){
                                 PostCategory postCategory = post.getValue(PostCategory.class);
-                                //data_resume.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
                                 int value = resumeMap.containsKey(postCategory.getTag()) ? resumeMap.get(postCategory.getTag()): 0;
                                 resumeMap.put(postCategory.getTag(),  value+postCategory.getCount());
                             }
@@ -260,55 +256,66 @@ public class MonthFragment extends Fragment {
                         if(dataSnapshot.child("post").child(date).hasChild("interview")){
 
                             DataSnapshot snap1 = dataSnapshot.child("post").child(date).child("interview").child("tag");
-                            DataSnapshot ratio_interview = dataSnapshot.child("post").child(date).child("interview").child("ratio");
-                            TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
-                            myTextView1.setText(ratio_interview.getValue().toString() + "%");
                             for(DataSnapshot post : snap1.getChildren()){
                                 PostCategory postCategory = post.getValue(PostCategory.class);
-                                //data_interview.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
                                 int value = interMap.containsKey(postCategory.getTag()) ? interMap.get(postCategory.getTag()): 0;
                                 interMap.put(postCategory.getTag(),  value+postCategory.getCount());
                             }
                         }
                         if(dataSnapshot.child("post").child(date).hasChild("job search")){
                             DataSnapshot snap2 = dataSnapshot.child("post").child(date).child("job search").child("tag");
-                            DataSnapshot ratio_xxx = dataSnapshot.child("post").child(date).child("job search").child("ratio");
-                            TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
-                            myTextView2.setText(ratio_xxx.getValue().toString() + "%");
                             for(DataSnapshot post : snap2.getChildren()){
                                 PostCategory postCategory = post.getValue(PostCategory.class);
-                                //data_xxx.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
                                 int value = xxxMap.containsKey(postCategory.getTag()) ? xxxMap.get(postCategory.getTag()): 0;
                                 xxxMap.put(postCategory.getTag(),  value+postCategory.getCount());
                             }
                         }
                         if(dataSnapshot.child("post").child(date).hasChild("others")){
                             DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
-                            DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");
-                            TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
-                            myTextView3.setText(ratio_other.getValue().toString() + "%");
                             for(DataSnapshot post : snap3.getChildren()){
                                 PostCategory postCategory = post.getValue(PostCategory.class);
-                                //data_others.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
                                 int value = otherMap.containsKey(postCategory.getTag()) ? otherMap.get(postCategory.getTag()): 0;
                                 otherMap.put(postCategory.getTag(),  value+postCategory.getCount());
                             }
                         }
                     }
                 }
+                int totalInterview = 0, totalJob = 0, totalResume = 0, totalOther = 0 ;
                 for(String key : interMap.keySet()){
                     data_interview.add(new TagSingle(key, interMap.get(key), false));
+                    totalInterview += interMap.get(key);
                 }
                 for(String key : resumeMap.keySet()){
                     data_resume.add(new TagSingle(key, resumeMap.get(key), false));
+                    totalResume += resumeMap.get(key);
                 }
                 for(String key : otherMap.keySet()){
                     data_others.add(new TagSingle(key, otherMap.get(key), false));
+                    totalOther += otherMap.get(key);
                 }
                 for(String key : xxxMap.keySet()){
                     data_xxx.add(new TagSingle(key, xxxMap.get(key), false));
+                    totalJob += xxxMap.get(key);
                 }
+                int total = totalJob + totalInterview + totalResume + totalOther;
+                double interRatio = total == 0 ? 0.0 : (double)totalInterview/total * 100;
+                double resumeRatio = total == 0 ? 0.0 : (double)totalResume/total * 100;
+                double otherRatio = total == 0 ? 0.0 : (double)totalOther/total * 100;
+                double jobRatio = total == 0 ? 0.0 : (double)totalJob/total * 100;
 
+                int ratio_i = (int) interRatio;
+                int ratio_r = (int) resumeRatio;
+                int ratio_o = (int) otherRatio;
+                int ratio_j = (int) jobRatio;
+
+                TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
+                myTextView1.setText(Integer.toString(ratio_i) + "%");
+                TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
+                myTextView.setText(Integer.toString(ratio_r) + "%");
+                TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
+                myTextView2.setText(Integer.toString(ratio_j) + "%");
+                TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
+                myTextView3.setText(Integer.toString(ratio_o) + "%");
 
                 listAdapter_resume.notifyDataSetChanged();
                 listAdapter_others.notifyDataSetChanged();
