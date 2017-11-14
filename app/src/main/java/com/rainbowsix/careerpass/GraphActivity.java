@@ -3,10 +3,11 @@ package com.rainbowsix.careerpass;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.R.attr.data;
-
 class Combo implements Comparable<Combo> {
     int num;
     String time;
@@ -41,10 +40,13 @@ class Combo implements Comparable<Combo> {
 }
 public class GraphActivity extends MenuActivity {
     List<Combo> tagData;
+    ArrayList<String> result;
     Button back;
     String tagName;
+    GridView related;
     DatabaseReference databaseReference;
     TextView currenttag;
+    GridviewAdapter gadapter;
     String[] month = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,28 @@ public class GraphActivity extends MenuActivity {
         getLayoutInflater().inflate(R.layout.activity_graph, frameLayout);
         //setContentView(R.layout.activity_graph);
         tagData = new ArrayList<>();
+        result = new ArrayList<>();
+        gadapter = new GridviewAdapter(getApplicationContext(), result);
+        related = (GridView)findViewById(R.id.related);
         currenttag = (TextView)findViewById(R.id.currenttag);
+
         Bundle extras = getIntent().getExtras();
-        if(extras !=null) {
+        if(extras != null) {
             tagName = extras.getString("tag");
             currenttag.setText(tagName);
+            result = (ArrayList<String>)extras.getSerializable("result");
+            result.remove(tagName);
             //Log.v("tagname", tagName);
+//            for (int i = 0; i < result.size(); i++) {
+//                Log.v("result", result.get(i));
+//            }
+            gadapter = new GridviewAdapter(getApplicationContext(), result);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                    this,
+//                    android.R.layout.simple_expandable_list_item_1,
+//                    result);
+            related.setAdapter(gadapter);
+            gadapter.notifyDataSetChanged();
         }
         final GraphView graph = (GraphView)findViewById(R.id.graph);
         back = (Button)findViewById(R.id.back);
