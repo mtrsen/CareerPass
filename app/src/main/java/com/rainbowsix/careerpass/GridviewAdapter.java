@@ -42,4 +42,6 @@ public class GridviewAdapter extends ArrayAdapter {
         name.setText(list.get(position));
         return view;
     }
+
+
 }
