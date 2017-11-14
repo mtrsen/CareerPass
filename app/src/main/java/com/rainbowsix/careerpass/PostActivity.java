@@ -36,7 +36,7 @@ public class PostActivity extends AppCompatActivity {
 
     String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
     String[] resume = {"Write cover letter", "Revise resume", "Go to workshops"};
-    String[] job = {"LinkedIn", "Career fair", "Interview", "Asking professors", "Go to tech talks"};
+    String[] job = {"LinkedIn", "Career fair", "Interview", "Asking professors", "Go to tech talks", "Job referral", "Coding practice"};
     String[] others = {"BBS", "Project overview", "Talking to C2D2"};
 
 
