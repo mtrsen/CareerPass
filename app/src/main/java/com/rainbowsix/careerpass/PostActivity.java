@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +30,6 @@ public class PostActivity extends AppCompatActivity {
     Spinner spinner_category, spinner_tag;
     Button cancel, post;
     String m_tag, m_cat, m_date, m_tip;
-
     private DatabaseReference mDatabaseReference;
 
     String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
@@ -47,6 +49,24 @@ public class PostActivity extends AppCompatActivity {
     public void initialize() {
         //tag = (EditText)findViewById(R.id.tag_title);
         date = (EditText)findViewById(R.id.date);
+        date.addTextChangedListener(new TextWatcher() {
+            int prevL = 0;
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                prevL = date.getText().toString().length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (prevL < editable.length() && (editable.length() == 2 || editable.length() == 5))
+                    editable.append('/');
+            }
+        });
         tip = (EditText)findViewById(R.id.tip);
         spinner_category = (Spinner)findViewById(R.id.spinner_category);
         spinner_tag = (Spinner)findViewById(R.id.spinner_tag);
@@ -118,21 +138,24 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 final String cate =  m_cat;
-                final String Date = date.getText().toString();
+                StringBuilder sb = new StringBuilder();
+                sb.append(date.getText().toString().substring(6) + date.getText().toString().substring(0, 2)
+                + date.getText().toString().substring(3, 5));
+                final String Date = sb.toString();
                 //add post to database and change the count of the post
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         DataSnapshot snap = dataSnapshot.child("post");
-                        if(snap.hasChild(date.getText().toString()) && snap.child(date.getText().toString()).hasChild(cate) && snap.child(date.getText().toString()).child(cate).child("tag").hasChild(m_tag)){
-                            int num = snap.child(date.getText().toString()).child(m_cat).child("count").getValue(Integer.class);
+                        if(snap.hasChild(Date) && snap.child(Date).hasChild(cate) && snap.child(Date).child(cate).child("tag").hasChild(m_tag)){
+                            int num = snap.child(Date).child(m_cat).child("count").getValue(Integer.class);
                             PostCategory userPost = new PostCategory("false",num+1, m_tag);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
 
                         }
                         else{
                             PostCategory userPost = new PostCategory("false",1, m_tag);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
 
                         }
 
@@ -147,15 +170,15 @@ public class PostActivity extends AppCompatActivity {
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot snap = dataSnapshot.child("post").child(date.getText().toString()).child(cate);
+                        DataSnapshot snap = dataSnapshot.child("post").child(Date).child(cate);
                         if (snap.hasChild("count")) {
                             int num = snap.child("count").getValue(Integer.class);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(num+1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(num+1);
 
                         }
                         else{
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(1);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("ratio").setValue(1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("ratio").setValue(1);
                         }
                     }
 
