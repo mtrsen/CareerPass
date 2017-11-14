@@ -78,8 +78,6 @@ public class WeekFragment extends Fragment {
         rootView1 = inflater.inflate(R.layout.week, container, false);
         initialize();
 
-        SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.USER_NAME, Context.MODE_PRIVATE);
-        name = "aaa";
 
         listAdapter_interview = new TagAdapter(getContext(), data_interview);
         list_interview.setAdapter(listAdapter_interview);
@@ -130,37 +128,76 @@ public class WeekFragment extends Fragment {
         List<String> dateList = getDateList(nowYear,nowMon, nowDate);
         setContent(dateList);
 
+        SharedPreferences sharedPre = this.getActivity().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        final String email = sharedPre.getString("username","");
 
         addtolist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Added Successfully!", Toast.LENGTH_LONG).show();
+                mFirebaseDatabaseReference.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String name = "aaa";
+                        for(DataSnapshot singleUser : dataSnapshot.getChildren()){
+                            String getEmail = singleUser.child("email").getValue().toString();
+                            if (getEmail.equals(email)){
+                                name = singleUser.getKey().toString();
+                            }
+                        }
 
-                for(int i = 0; i < data_interview.size(); i++){
-                    if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
-                        toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child(name).child(data_interview.get(i).getTag()).setValue(todo);
-                    }
-                }
-                for(int i = 0; i < data_resume.size(); i++){
-                    if(Boolean.valueOf(data_resume.get(i).getAdded()) == true){
-                        toDoListBlock todo = new toDoListBlock("resume",date,data_resume.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child(name).child(data_resume.get(i).getTag()).setValue(todo);
+                        for(int i = 0; i < data_interview.size(); i++){
+                            if(Boolean.valueOf(data_interview.get(i).getAdded()) == true){
+                                if(dataSnapshot.child(name).hasChild("todo") && dataSnapshot.child(name).child("todo").hasChild(data_interview.get(i).getTag())){
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_interview.get(i).getTag()).child("time").setValue(date);
+                                }
+                                else{
+                                    toDoListBlock todo = new toDoListBlock("interview",date,data_interview.get(i).getTag(),"false");
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_interview.get(i).getTag()).setValue(todo);
+                                }
+                            }
+                        }
+                        for(int i = 0; i < data_resume.size(); i++){
+                            if(Boolean.valueOf(data_resume.get(i).getAdded()) == true){
+                                if(dataSnapshot.child(name).hasChild("todo") && dataSnapshot.child(name).child("todo").hasChild(data_resume.get(i).getTag())){
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_resume.get(i).getTag()).child("time").setValue(date);
+                                }
+                                else{
+                                    toDoListBlock todo = new toDoListBlock("resume",date,data_resume.get(i).getTag(),"false");
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_resume.get(i).getTag()).setValue(todo);
+                                }
+                            }
+                        }
+                        for(int i = 0; i < data_xxx.size(); i++){
+                            if(Boolean.valueOf(data_xxx.get(i).getAdded()) == true){
+                                if(dataSnapshot.child(name).hasChild("todo") && dataSnapshot.child(name).child("todo").hasChild(data_xxx.get(i).getTag())){
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_xxx.get(i).getTag()).child("time").setValue(date);
+                                }
+                                else{
+                                    toDoListBlock todo = new toDoListBlock("job search",date,data_xxx.get(i).getTag(),"false");
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_xxx.get(i).getTag()).setValue(todo);
+                                }
+                            }
+                        }
+                        for(int i = 0; i < data_others.size(); i++){
+                            if(Boolean.valueOf(data_others.get(i).getAdded()) == true){
+                                if(dataSnapshot.child(name).hasChild("todo") && dataSnapshot.child(name).child("todo").hasChild(data_others.get(i).getTag())){
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_others.get(i).getTag()).child("time").setValue(date);
+                                }
+                                else{
+                                    toDoListBlock todo = new toDoListBlock("others",date,data_others.get(i).getTag(),"false");
+                                    mFirebaseDatabaseReference.child("User").child(name).child("todo").child(data_others.get(i).getTag()).setValue(todo);
+                                }
+                            }
+                        }
 
                     }
-                }
-                for(int i = 0; i < data_xxx.size(); i++){
-                    if(Boolean.valueOf(data_xxx.get(i).getAdded()) == true){
-                        toDoListBlock todo = new toDoListBlock("xxx",date,data_xxx.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child(name).child(data_xxx.get(i).getTag()).setValue(todo);
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
-                }
-                for(int i = 0; i < data_others.size(); i++){
-                    if(Boolean.valueOf(data_others.get(i).getAdded()) == true){
-                        toDoListBlock todo = new toDoListBlock("others",date,data_others.get(i).getTag(),"false");
-                        mFirebaseDatabase.getReference().child(name).child(data_others.get(i).getTag()).setValue(todo);
-                    }
-                }
+                });
 
             }
         });
@@ -391,14 +428,12 @@ public class WeekFragment extends Fragment {
                 int ratio_o = (int) otherRatio;
                 int ratio_j = (int) jobRatio;
 
-                TextView myTextView1= (TextView) rootView1.findViewById(R.id.interview_percent);
-                myTextView1.setText(Integer.toString(ratio_i) + "%");
-                TextView myTextView= (TextView) rootView1.findViewById(R.id.resume_percent);
-                myTextView.setText(Integer.toString(ratio_r) + "%");
-                TextView myTextView2= (TextView) rootView1.findViewById(R.id.xxx_percent);
-                myTextView2.setText(Integer.toString(ratio_j) + "%");
-                TextView myTextView3= (TextView) rootView1.findViewById(R.id.others_percent);
-                myTextView3.setText(Integer.toString(ratio_o) + "%");
+
+                ((TextView) rootView1.findViewById(R.id.interview_percent)).setText(Integer.toString(ratio_i) + "%");
+                ((TextView) rootView1.findViewById(R.id.resume_percent)).setText(Integer.toString(ratio_r) + "%");
+                ((TextView) rootView1.findViewById(R.id.xxx_percent)).setText(Integer.toString(ratio_j) + "%");
+                ((TextView) rootView1.findViewById(R.id.others_percent)).setText(Integer.toString(ratio_o) + "%");
+
 
                 listAdapter_resume.notifyDataSetChanged();
                 listAdapter_others.notifyDataSetChanged();

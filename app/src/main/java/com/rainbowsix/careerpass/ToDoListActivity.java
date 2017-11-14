@@ -1,5 +1,7 @@
 package com.rainbowsix.careerpass;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,20 +41,38 @@ public class ToDoListActivity extends MenuActivity{
         list = (ListView)findViewById(R.id.list_todo);
         data = new ArrayList<ListSingle>();
         notselected = new ArrayList<ListSingle>();
+
+        SharedPreferences sharedPre = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        final String email = sharedPre.getString("username","");
+
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                DataSnapshot userSnapshot = dataSnapshot.child("aaa");
-                for (DataSnapshot block : userSnapshot.getChildren()) {
-                    toDoListBlock cur1 = block.getValue(toDoListBlock.class);
-                    ListSingle temp = new ListSingle(cur1.name, cur1.category, cur1.time, Boolean.parseBoolean(cur1.complete));
-                    if(!Boolean.parseBoolean(cur1.getComplete())) {
-                        notselected.add(temp);
+                //find name
+                DataSnapshot snap = dataSnapshot.child("User");
+                String name = "aaa";
+                for(DataSnapshot singleUser : snap.getChildren()){
+                    String getEmail = singleUser.child("email").getValue().toString();
+                    if (getEmail.equals(email)){
+                        name = singleUser.getKey().toString();
                     }
-                    data.add(temp);
-                    listAdapter.notifyDataSetChanged();
-                    Log.v("boolean set: ", cur1.complete);
                 }
+                //find to list
+                DataSnapshot userSnapshot = dataSnapshot.child("User").child(name);
+                if(userSnapshot.hasChild("todo")){
+                    for (DataSnapshot block : userSnapshot.child("todo").getChildren()) {
+                        toDoListBlock cur1 = block.getValue(toDoListBlock.class);
+                        ListSingle temp = new ListSingle(cur1.name, cur1.category, cur1.time, Boolean.parseBoolean(cur1.complete));
+                        if(!Boolean.parseBoolean(cur1.getComplete())) {
+                            notselected.add(temp);
+                        }
+                        data.add(temp);
+                        listAdapter.notifyDataSetChanged();
+                        Log.v("boolean set: ", cur1.complete);
+                    }
+
+                }
+
             }
 
             @Override
