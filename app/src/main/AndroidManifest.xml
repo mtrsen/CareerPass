@@ -41,7 +41,10 @@
         <activity
             android:name=".MenuActivity"
             android:exported="true" />
-        <activity android:name=".GraphActivity"></activity>
+        <activity android:name=".GraphActivity"
+            android:label="Activity Trends">
+
+        </activity>
     </application>
 
 </manifest>

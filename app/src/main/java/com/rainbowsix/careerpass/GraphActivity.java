@@ -70,10 +70,6 @@ public class GraphActivity extends MenuActivity {
 //                Log.v("result", result.get(i));
 //            }
             gadapter = new GridviewAdapter(getApplicationContext(), result);
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                    this,
-//                    android.R.layout.simple_expandable_list_item_1,
-//                    result);
             related.setAdapter(gadapter);
             gadapter.notifyDataSetChanged();
         }
