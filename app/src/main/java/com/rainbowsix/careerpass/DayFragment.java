@@ -124,7 +124,9 @@ public class DayFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseDatabaseReference = mFirebaseDatabase.getReference();
 
-        final String date = Integer.toString(nowYear) + Integer.toString(Arrays.asList(month).indexOf(nowMon) + 1) + (nowDate < 10 ? "0" + nowDate : nowDate);
+        int index = Arrays.asList(month).indexOf(nowMon) + 1;
+        String monthCur = index < 10 ? "0" + Integer.toString(index) : Integer.toString(index);
+        final String date = Integer.toString(nowYear) + monthCur + (nowDate < 10 ? "0" + nowDate : nowDate);
         setContent(date);
         addtolist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,7 +189,8 @@ public class DayFragment extends Fragment {
                 year.setText(String.valueOf(curYear));
                 int monIndex = Arrays.asList(month).indexOf(curMon) + 1;
                 String dataCur = curDate < 10 ? "0" + Integer.toString(curDate) : Integer.toString(curDate);
-                String date = Integer.toString(curYear) + Integer.toString(monIndex) + dataCur;
+                String monthCur = monIndex < 10 ? "0" + Integer.toString(monIndex) : Integer.toString(monIndex);
+                String date = Integer.toString(curYear) + monthCur + dataCur;
                 setContent(date);
             }
         });
@@ -211,7 +214,8 @@ public class DayFragment extends Fragment {
                 year.setText(String.valueOf(curYear));
                 int monIndex = Arrays.asList(month).indexOf(curMon) + 1;
                 String dataCur = curDate < 10 ? "0" + Integer.toString(curDate) : Integer.toString(curDate);
-                String date = Integer.toString(curYear) + Integer.toString(monIndex) + dataCur;
+                String monthCur = monIndex < 10 ? "0" + Integer.toString(monIndex) : Integer.toString(monIndex);
+                String date = Integer.toString(curYear) + monthCur + dataCur;
                 setContent(date);
             }
         });

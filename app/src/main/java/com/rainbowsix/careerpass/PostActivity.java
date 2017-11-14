@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -119,20 +120,22 @@ public class PostActivity extends AppCompatActivity {
 
                 final String cate =  m_cat;
                 final String Date = date.getText().toString();
+
+
                 //add post to database and change the count of the post
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         DataSnapshot snap = dataSnapshot.child("post");
-                        if(snap.hasChild(date.getText().toString()) && snap.child(date.getText().toString()).hasChild(cate) && snap.child(date.getText().toString()).child(cate).child("tag").hasChild(m_tag)){
-                            int num = snap.child(date.getText().toString()).child(m_cat).child("count").getValue(Integer.class);
+                        if(snap.hasChild(Date) && snap.child(Date).hasChild(cate) && snap.child(Date).child(cate).child("tag").hasChild(m_tag)){
+                            int num = snap.child(Date).child(m_cat).child("count").getValue(Integer.class);
                             PostCategory userPost = new PostCategory("false",num+1, m_tag);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
 
                         }
                         else{
                             PostCategory userPost = new PostCategory("false",1, m_tag);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("tag").child(m_tag).setValue(userPost);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
 
                         }
 
@@ -143,22 +146,73 @@ public class PostActivity extends AppCompatActivity {
                     }
                 });
 
-
+                //update count
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot snap = dataSnapshot.child("post").child(date.getText().toString()).child(cate);
+                        DataSnapshot snap = dataSnapshot.child("post").child(Date).child(cate);
                         if (snap.hasChild("count")) {
                             int num = snap.child("count").getValue(Integer.class);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(num+1);
-
+                            mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(num+1);
                         }
                         else{
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("count").setValue(1);
-                            mDatabaseReference.child("post").child(date.getText().toString()).child(cate).child("ratio").setValue(1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("ratio").setValue(1);
+                            mDatabaseReference.child("post").child(Date).child(cate).child("name").setValue(cate);
                         }
-                    }
 
+
+                        DataSnapshot snapShot = dataSnapshot.child("post").child(Date);
+                        int totalInterview = 0, totalJob = 0, totalResume = 0, totalOther = 0 ;
+                        if(cate.equals("interview"))    totalInterview++;
+                        if(cate.equals("job search"))    totalJob++;
+                        if(cate.equals("resume"))    totalResume++;
+                        if(cate.equals("others"))   totalOther++;
+
+                        if(snapShot.hasChild("interview")){
+                            for(DataSnapshot oneTag : snapShot.child("interview").child("tag").getChildren()){
+                                totalInterview += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("job search")){
+                            for(DataSnapshot oneTag : snapShot.child("job search").child("tag").getChildren()){
+                                totalJob += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("resume")){
+                            for(DataSnapshot oneTag : snapShot.child("resume").child("tag").getChildren()){
+                                totalResume += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("others")){
+                            for(DataSnapshot oneTag : snapShot.child("others").child("tag").getChildren()){
+                                totalOther += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+
+                        int total = totalInterview + totalJob + totalResume + totalOther;
+                        if(totalInterview != 0){
+                            double Ratio = (double)totalInterview/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("interview").child("ratio").setValue(ratio);
+                        }
+                        if(totalResume != 0){
+                            double Ratio = (double)totalResume/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("resume").child("ratio").setValue(ratio);
+                        }
+                        if(totalOther != 0){
+                            double Ratio = (double)totalOther/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("others").child("ratio").setValue(ratio);
+                        }
+                        if(totalJob != 0){
+                            double Ratio = (double)totalJob/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("job search").child("ratio").setValue(ratio);
+                        }
+
+                    }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -168,6 +222,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void open(View view){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -181,7 +236,6 @@ public class PostActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
