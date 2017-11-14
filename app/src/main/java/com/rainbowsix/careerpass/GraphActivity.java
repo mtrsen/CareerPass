@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -40,7 +40,7 @@ class Combo implements Comparable<Combo> {
 }
 public class GraphActivity extends MenuActivity {
     List<Combo> tagData;
-    ArrayList<String> result;
+    ArrayList<String> result1;
     Button back;
     String tagName;
     GridView related;
@@ -54,8 +54,8 @@ public class GraphActivity extends MenuActivity {
         getLayoutInflater().inflate(R.layout.activity_graph, frameLayout);
         //setContentView(R.layout.activity_graph);
         tagData = new ArrayList<>();
-        result = new ArrayList<>();
-        gadapter = new GridviewAdapter(getApplicationContext(), result);
+        result1 = new ArrayList<>();
+        gadapter = new GridviewAdapter(getApplicationContext(), result1);
         related = (GridView)findViewById(R.id.related);
         currenttag = (TextView)findViewById(R.id.currenttag);
 
@@ -63,13 +63,13 @@ public class GraphActivity extends MenuActivity {
         if(extras != null) {
             tagName = extras.getString("tag");
             currenttag.setText(tagName);
-            result = (ArrayList<String>)extras.getSerializable("result");
-            result.remove(tagName);
+            result1 = (ArrayList<String>)extras.getSerializable("result");
+            result1.remove(tagName);
             //Log.v("tagname", tagName);
 //            for (int i = 0; i < result.size(); i++) {
 //                Log.v("result", result.get(i));
 //            }
-            gadapter = new GridviewAdapter(getApplicationContext(), result);
+            gadapter = new GridviewAdapter(getApplicationContext(), result1);
             related.setAdapter(gadapter);
             gadapter.notifyDataSetChanged();
         }
@@ -102,7 +102,7 @@ public class GraphActivity extends MenuActivity {
                 //Log.v("checktime222", Integer.toString(tagData.size()));
                 //Log.v("checktimeint", tagData.get(0).time);
                 Collections.sort(tagData);
-                List<Combo> result = new ArrayList<>();
+                final List<Combo> result = new ArrayList<>();
                 int ind = 0;
                 for(int i = 0; i < tagData.size(); i++) {
                     int temp = Integer.parseInt(tagData.get(i).time) / 100;
@@ -123,12 +123,15 @@ public class GraphActivity extends MenuActivity {
 
 
                 //Log.v("createtime", "" + tagData.size());
-                  DataPoint[] data = new DataPoint[result.size()];
+                DataPoint[] data = new DataPoint[12];
+                for (int i = 0; i < 12; i++) {
+                    data[i] = new DataPoint(i + 1, 0);
+                }
 //                Date small = null;
 //                Date large = null;
                   int countsmall = Integer.MAX_VALUE;
                   int countlarge = Integer.MIN_VALUE;
-                for (int i = 0; i < data.length; i++) {
+                for (int i = 0; i < result.size(); i++) {
                     Combo point = result.get(i);
 //                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM");
 //                    String temp = point.time.substring(0, 4) + "-" + point.time.substring(4);
@@ -140,15 +143,34 @@ public class GraphActivity extends MenuActivity {
 //                    }
 //                    if (i == 0) small = t;
 //                    if (i == data.length - 1) large = t;
-                    data[i] = new DataPoint(Integer.parseInt(point.time), point.num);
+                    int mon = Integer.parseInt(point.time) % 100;
+                    data[mon - 1] = new DataPoint(Integer.parseInt(point.time), point.num);
                     countsmall = Math.min(countsmall, point.num);
                     countlarge = Math.max(countlarge, point.num);
-                    //Log.v("createtime", "" + Integer.parseInt(point.time));
+                    //Log.v("createtime", "" + data[mon - 1].getX());
+                    //Log.v("create", "" + data[mon - 1].getY());
                 }
 
 
                 //series.setBackgroundColor(20);
                 draw(graph, data, countsmall, countlarge);
+
+                related.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        String currenttag = result1.get(position);
+                        ArrayList<String> current = new ArrayList<>(result1);
+                        current.add(tagName);
+                        Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("tag", currenttag);
+                        extras.putSerializable("result", current);
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
+                });
+
             }
 
             @Override
@@ -160,7 +182,6 @@ public class GraphActivity extends MenuActivity {
             @Override
             public void onClick(View view) {
                 tagData.clear();
-                //graph.destroyDrawingCache();
                 finish();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
@@ -180,16 +201,16 @@ public class GraphActivity extends MenuActivity {
 
 
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-        //graph.getGridLabelRenderer().setNumHorizontalLabels(12); // only 4 because of the space
+        graph.getGridLabelRenderer().setNumHorizontalLabels(13); // only 4 because of the space
         //graph.getGridLabelRenderer().setNumVerticalLabels(6);
 
 // set manual x bounds to have nice steps
-        graph.getViewport().setMinX(1);
+        graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(12);
         graph.getViewport().setXAxisBoundsManual(true);
 
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(countsmall);
+        graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(countlarge);
 
 // as we use dates as labels, the human rounding to nice readable numbers
@@ -223,6 +244,7 @@ public class GraphActivity extends MenuActivity {
                             //return prev;
                         } else {
                             // show currency for y values
+                            //Log.v("currentvalue", super.formatLabel(value, isValueX));
                             return super.formatLabel(value, isValueX);
                         }
                     }
