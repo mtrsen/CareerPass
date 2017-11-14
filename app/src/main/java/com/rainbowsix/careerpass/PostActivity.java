@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
+
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,10 +28,10 @@ import static android.R.attr.button;
 
 public class PostActivity extends AppCompatActivity {
 
-    EditText tag, date, tip;
+    EditText tag, date ;
     Spinner spinner_category, spinner_tag;
     Button cancel, post;
-    String m_tag, m_cat, m_date, m_tip;
+    String m_tag, m_cat;
     private DatabaseReference mDatabaseReference;
 
     String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
@@ -42,6 +44,13 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+
+        getWindow().setLayout((int)(width * 0.85), (int)(height * 0.85));
         initialize();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
     }
@@ -67,7 +76,6 @@ public class PostActivity extends AppCompatActivity {
                     editable.append('/');
             }
         });
-        tip = (EditText)findViewById(R.id.tip);
         spinner_category = (Spinner)findViewById(R.id.spinner_category);
         spinner_tag = (Spinner)findViewById(R.id.spinner_tag);
         cancel = (Button)findViewById(R.id.cancel);
@@ -138,10 +146,8 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 final String cate =  m_cat;
-                StringBuilder sb = new StringBuilder();
-                sb.append(date.getText().toString().substring(6) + date.getText().toString().substring(0, 2)
-                + date.getText().toString().substring(3, 5));
-                final String Date = sb.toString();
+                final String Date = date.getText().toString();
+
                 //add post to database and change the count of the post
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -166,7 +172,7 @@ public class PostActivity extends AppCompatActivity {
                     }
                 });
 
-
+                //update count
                 mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -174,14 +180,66 @@ public class PostActivity extends AppCompatActivity {
                         if (snap.hasChild("count")) {
                             int num = snap.child("count").getValue(Integer.class);
                             mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(num+1);
-
                         }
                         else{
                             mDatabaseReference.child("post").child(Date).child(cate).child("count").setValue(1);
                             mDatabaseReference.child("post").child(Date).child(cate).child("ratio").setValue(1);
-                        }
-                    }
 
+                            mDatabaseReference.child("post").child(Date).child(cate).child("name").setValue(cate);
+                        }
+
+
+                        DataSnapshot snapShot = dataSnapshot.child("post").child(Date);
+                        int totalInterview = 0, totalJob = 0, totalResume = 0, totalOther = 0 ;
+                        if(cate.equals("interview"))    totalInterview++;
+                        if(cate.equals("job search"))    totalJob++;
+                        if(cate.equals("resume"))    totalResume++;
+                        if(cate.equals("others"))   totalOther++;
+
+                        if(snapShot.hasChild("interview")){
+                            for(DataSnapshot oneTag : snapShot.child("interview").child("tag").getChildren()){
+                                totalInterview += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("job search")){
+                            for(DataSnapshot oneTag : snapShot.child("job search").child("tag").getChildren()){
+                                totalJob += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("resume")){
+                            for(DataSnapshot oneTag : snapShot.child("resume").child("tag").getChildren()){
+                                totalResume += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+                        if(snapShot.hasChild("others")){
+                            for(DataSnapshot oneTag : snapShot.child("others").child("tag").getChildren()){
+                                totalOther += oneTag.child("count").getValue(Integer.class);
+                            }
+                        }
+
+                        int total = totalInterview + totalJob + totalResume + totalOther;
+                        if(totalInterview != 0){
+                            double Ratio = (double)totalInterview/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("interview").child("ratio").setValue(ratio);
+                        }
+                        if(totalResume != 0){
+                            double Ratio = (double)totalResume/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("resume").child("ratio").setValue(ratio);
+                        }
+                        if(totalOther != 0){
+                            double Ratio = (double)totalOther/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("others").child("ratio").setValue(ratio);
+                        }
+                        if(totalJob != 0){
+                            double Ratio = (double)totalJob/total * 100;
+                            int ratio = (int) Ratio;
+                            mDatabaseReference.child("post").child(Date).child("job search").child("ratio").setValue(ratio);
+                        }
+
+                    }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -191,6 +249,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void open(View view){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -204,7 +263,6 @@ public class PostActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
