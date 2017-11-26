@@ -313,7 +313,6 @@ public class DayFragment extends Fragment {
                             data_xxx.add(new TagSingle(postCategory.getTag(), postCategory.getCount(), Boolean.valueOf(postCategory.getAdd())));
                         }
                     }
-                    //listAdapter_xxx.notifyDataSetChanged();
                     if(dataSnapshot.child("post").child(date).hasChild("others")){
                         DataSnapshot snap3 = dataSnapshot.child("post").child(date).child("others").child("tag");
                         DataSnapshot ratio_other = dataSnapshot.child("post").child(date).child("others").child("ratio");

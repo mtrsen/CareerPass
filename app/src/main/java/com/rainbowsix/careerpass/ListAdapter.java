@@ -78,7 +78,6 @@ public class ListAdapter extends ArrayAdapter {
                             mDatabase.child("User").child(name).child("todo").child(single.getTag()).child("complete").setValue("false");
                         }
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 

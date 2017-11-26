@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import static android.R.attr.button;
+import static android.R.attr.logo;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -146,7 +147,6 @@ public class PostActivity extends AppCompatActivity {
                 }
 
                 final String cate =  m_cat;
-                //final String Date = date.getText().toString();
 
                 StringBuilder sb = new StringBuilder();
                 sb.append(date.getText().toString().substring(6) + date.getText().toString().substring(0, 2)
@@ -159,17 +159,24 @@ public class PostActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         DataSnapshot snap = dataSnapshot.child("post");
-                        if(snap.hasChild(Date) && snap.child(Date).hasChild(cate) && snap.child(Date).child(cate).child("tag").hasChild(m_tag)){
-                            int num = snap.child(Date).child(m_cat).child("count").getValue(Integer.class);
-                            PostCategory userPost = new PostCategory("false",num+1, m_tag);
-                            mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
-
+                        boolean alreadyExist = false;
+                        int num = 1;
+                        if(snap.hasChild(Date) && snap.child(Date).hasChild(cate)){
+                            for(DataSnapshot singleTag : snap.child(Date).child(cate).child("tag").getChildren()){
+                                if(singleTag.child("tag").getValue(String.class).equals(m_tag)){
+                                    alreadyExist = true;
+                                    num += singleTag.child("count").getValue(Integer.class);
+                                    String key = singleTag.getKey();
+                                    mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(key).child("count").setValue(num);
+                                    break;
+                                }
+                            }
                         }
-                        else{
-                            PostCategory userPost = new PostCategory("false",1, m_tag);
+                        if(!alreadyExist){
+                            PostCategory userPost = new PostCategory("false",num, m_tag);
                             mDatabaseReference.child("post").child(Date).child(cate).child("tag").child(m_tag).setValue(userPost);
-
                         }
+
 
                     }
                     @Override

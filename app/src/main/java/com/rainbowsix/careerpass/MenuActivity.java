@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.
                 for(DataSnapshot singleUser : snap.getChildren()){
                     String getEmail = singleUser.child("email").getValue().toString();
                     if (getEmail.equals(email)){
-                        nameTextView.setText(singleUser.getKey().toString());
+                     //   nameTextView.setText(singleUser.getKey().toString());
 
                     }
                 }
@@ -80,7 +80,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.
             }
         });
 
-        emailTextView.setText(email);
+        //emailTextView.setText(email);
 
 
         getMenuInflater().inflate(R.menu.main, menu);
