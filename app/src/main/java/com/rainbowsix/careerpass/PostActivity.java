@@ -34,10 +34,10 @@ public class PostActivity extends AppCompatActivity {
     String m_tag, m_cat;
     private DatabaseReference mDatabaseReference;
 
-    String[] interviews = {"Prepare for questions", "On campus interview", "Onsite interview", "Phone interview", "Mock-up interview"};
-    String[] resume = {"Write cover letter", "Revise resume", "Go to workshops"};
+    String[] interviews = {"Prepare for Questions", "On Campus Interview", "Onsite Interview", "Phone interview", "Mock-up interview"};
+    String[] resume = {"Write cover letter", "Revise Resume", "Go to workshops"};
     String[] job = {"LinkedIn", "Career fair", "Interview", "Asking professors", "Go to tech talks"};
-    String[] others = {"BBS", "Project overview", "Talking to C2D2"};
+    String[] others = {"BBS", "Project Overview", "Talking to C2D2"};
 
 
     @Override
