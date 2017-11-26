@@ -144,7 +144,7 @@ public class GraphActivity extends MenuActivity {
 //                    if (i == 0) small = t;
 //                    if (i == data.length - 1) large = t;
                     int mon = Integer.parseInt(point.time) % 100;
-                    data[mon - 1] = new DataPoint(Integer.parseInt(point.time), point.num);
+                    data[mon - 1] = new DataPoint(mon, point.num);
                     countsmall = Math.min(countsmall, point.num);
                     countlarge = Math.max(countlarge, point.num);
                     //Log.v("createtime", "" + data[mon - 1].getX());
@@ -236,7 +236,8 @@ public class GraphActivity extends MenuActivity {
                             // show normal x values
                             String prev = super.formatLabel(value, isValueX);
                             //Log.v("xxx", prev);
-                            if (prev.indexOf(".") != -1) prev = prev.substring(0, prev.indexOf("."));
+                            if (prev.indexOf(".") != -1) return "";
+                            //if (prev.indexOf(".") != -1) prev = prev.substring(0, prev.indexOf("."));
                             int m = Integer.parseInt(prev);
                             //String year = prev.substring(0, 3) + prev.charAt(4);
                             //Log.v("currentmonth", "" + m);
@@ -245,6 +246,9 @@ public class GraphActivity extends MenuActivity {
                         } else {
                             // show currency for y values
                             //Log.v("currentvalue", super.formatLabel(value, isValueX));
+                            String prev = super.formatLabel(value, isValueX);
+                            //Log.v("xxx", prev);
+                            if (prev.indexOf(".") != -1) return "";
                             return super.formatLabel(value, isValueX);
                         }
                     }
